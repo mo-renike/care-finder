@@ -19,8 +19,9 @@ const Navbar = () => {
   return (
     <AppBar
       sx={{
-        backgroundColor: "transparent",
+        backgroundColor: "rgba(255, 255, 255, 0.6)",
         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
+        zIndex: 100,
       }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
