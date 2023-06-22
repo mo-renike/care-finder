@@ -1,21 +1,31 @@
 "use cient";
-import React from "react";
+import React, { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import {
   Box,
+  Button,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { AiFillHome, AiOutlineSearch, AiOutlineLogin } from "react-icons/ai";
+import {
+  AiFillHome,
+  AiOutlineSearch,
+  AiOutlineLogin,
+  AiOutlinePlus,
+} from "react-icons/ai";
 import { MdOutlineLocalHospital } from "react-icons/md";
+import { AppContext } from "@/app/theme-provider";
+import { signOut } from "@/app/services/firebase/firebase";
 
 const Navbar = () => {
+  const { currentUser } = useContext(AppContext);
+
   return (
     <AppBar
       sx={{
@@ -42,10 +52,25 @@ const Navbar = () => {
             <AiOutlineSearch />
             <Typography>Find Hospitals</Typography>
           </Link>
-          <Link href="/signup">
-            <AiOutlineLogin />
-            <Typography>Login</Typography>
-          </Link>
+          {currentUser ? (
+            <Link href="/#find-hospitals">
+              <AiOutlinePlus />
+              <Typography>Find Hospitals</Typography>
+            </Link>
+          ) : (
+            ""
+          )}
+          {currentUser ? (
+            <Button onClick={signOut}>
+              <AiOutlineLogin />
+              <Typography>Logout</Typography>
+            </Button>
+          ) : (
+            <Link href="/signup">
+              <AiOutlineLogin />
+              <Typography>Login</Typography>
+            </Link>
+          )}
         </Box>
       </Toolbar>
     </AppBar>

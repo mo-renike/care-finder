@@ -1,11 +1,13 @@
-import { GET } from "@/app/api/hospitals/route";
+"use client";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { GET } from "@/app/api/routes";
 
 type Props = {};
 
 const HospitalsList = async (props: Props) => {
-  const [location, setLocation] = useState("Uyo");
+  const [location, setLocation] = useState("Ibadan");
+  const [hospitals, setHospitals] = useState([]);
 
   const cities: string[] = [
     "Lagos",
@@ -16,15 +18,6 @@ const HospitalsList = async (props: Props) => {
     "calabar",
     "Benin City",
   ];
-  const latitude = 6.456; // Provide the latitude value
-  const longitude = 3.012; // Provide the longitude value
-  const hospitalData = GET({
-    query: { latitude, longitude },
-  });
-
-  const hospitals = await hospitalData;
-
-  console.log(hospitals);
 
   return (
     <Box sx={{ p: "4rem 2rem" }}>
@@ -63,6 +56,10 @@ const HospitalsList = async (props: Props) => {
               Showing Hospitals in {location}{" "}
             </Typography>
           </Box>
+          {hospitals.map((hospital) => (
+            // eslint-disable-next-line react/jsx-key
+            <Box>hi</Box>
+          ))}
         </Grid>
       </Grid>
     </Box>

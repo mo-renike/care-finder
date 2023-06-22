@@ -9,8 +9,9 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Button,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   emailSignIn,
   emailSignUp,
@@ -49,11 +50,14 @@ const validate = (values: FormValues) => {
 
 interface loginProps {
   setCurrentUser: any;
-  currentUser: null;
+  currentUser: any;
 }
 const Page = (props: loginProps) => {
-  const { setCurrentUser, currentUser } = useContext<{}>(AppContext);
-
+  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const [toggle, setToggle] = useState(false);
+  const toggleForm = () => {
+    setToggle(!toggle);
+  };
   const formik = useFormik<FormValues>({
     initialValues: {
       email: "",
@@ -81,6 +85,9 @@ const Page = (props: loginProps) => {
     setCurrentUser(!currentUser); // Toggle authentication status
     formik.resetForm(); // Reset form values
   };
+  const handleSignUp = () => {
+    emailSignUp(formik.values.email, formik.values.password);
+  };
 
   return (
     <Box>
@@ -102,11 +109,11 @@ const Page = (props: loginProps) => {
             ? "Please log in to your account."
             : "Please fill in this form to create an account."}
         </Typography>
-        <form
-          onSubmit={formik.handleSubmit}
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          {!currentUser && (
+        {toggle ? (
+          <form
+            onSubmit={formik.handleSubmit}
+            style={{ display: "flex", flexDirection: "column" }}
+          >
             <TextField
               id="name"
               label="Name"
@@ -119,86 +126,146 @@ const Page = (props: loginProps) => {
                 borderColor: getFieldError("name") ? "red" : undefined,
               }}
             />
-          )}
-          {getFieldError("name") && (
-            <span className="error">{getFieldError("name")}</span>
-          )}
-
-          <TextField
-            id="email"
-            label="Email"
-            variant="outlined"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-            sx={{
-              my: 2,
-              borderColor: getFieldError("email") ? "red" : undefined,
-            }}
-          />
-          {getFieldError("email") && (
-            <span className="error">{getFieldError("email")}</span>
-          )}
-
-          <TextField
-            id="password"
-            label="Password"
-            variant="outlined"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.password}
-            sx={{
-              my: 2,
-              borderColor: getFieldError("password") ? "red" : undefined,
-            }}
-          />
-          {getFieldError("password") && (
-            <span className="error">{getFieldError("password")}</span>
-          )}
-
-          <button type="submit">{currentUser ? "Login" : "Sign Up"}</button>
-          <Typography sx={{ display: "flex", mt: ".5rem", fontSize: ".8rem" }}>
-            {!!currentUser ? (
-              <span>
-                You do not have an account? <Link href="/signup">Sign Up</Link>
-              </span>
-            ) : (
-              <span>
-                Already have an account? <Link href="/login">Login</Link>
-              </span>
+            {getFieldError("name") && (
+              <span className="error">{getFieldError("name")}</span>
             )}
-          </Typography>
 
-          <Typography
-            sx={{
-              display: "flex",
-              mt: ".5rem",
-              fontSize: "1.2rem",
-              fontWeight: "bold",
-              my: 3,
-              mx: "auto",
-            }}
+            <TextField
+              id="email"
+              label="Email"
+              variant="outlined"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              sx={{
+                my: 2,
+                borderColor: getFieldError("email") ? "red" : undefined,
+              }}
+            />
+            {getFieldError("email") && (
+              <span className="error">{getFieldError("email")}</span>
+            )}
+
+            <TextField
+              id="password"
+              label="Password"
+              variant="outlined"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+              sx={{
+                my: 2,
+                borderColor: getFieldError("password") ? "red" : undefined,
+              }}
+            />
+            {getFieldError("password") && (
+              <span className="error">{getFieldError("password")}</span>
+            )}
+
+            <button onClick={handleSignUp}>Sign Up</button>
+            <Typography
+              sx={{ display: "flex", mt: ".5rem", fontSize: ".8rem" }}
+            >
+              <span>
+                Already have an account?{" "}
+                <Button
+                  variant="text"
+                  sx={{
+                    fontSize: ".7rem",
+                    ml: 2,
+                    color: "rgba(120, 170, 145)",
+                  }}
+                  onClick={toggleForm}
+                >
+                  Login
+                </Button>
+              </span>
+            </Typography>
+
+            <Typography
+              sx={{
+                display: "flex",
+                mt: ".5rem",
+                fontSize: "1.2rem",
+                fontWeight: "bold",
+                my: 3,
+                mx: "auto",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              Or
+            </Typography>
+
+            <button type="button" className="button" onClick={signInWithGoogle}>
+              <FcGoogle style={{ marginRight: "2rem", fontSize: "1.5rem" }} />{" "}
+              Sign in with Google
+            </button>
+          </form>
+        ) : (
+          <form
+            onSubmit={formik.handleSubmit}
+            style={{ display: "flex", flexDirection: "column" }}
           >
-            Or
-          </Typography>
+            <TextField
+              id="email"
+              label="Email"
+              variant="outlined"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              sx={{
+                my: 2,
+                borderColor: getFieldError("email") ? "red" : undefined,
+              }}
+            />
+            {getFieldError("email") && (
+              <span className="error">{getFieldError("email")}</span>
+            )}
 
-          <button type="button" className="button" onClick={signInWithGoogle}>
-            <FcGoogle style={{ marginRight: "2rem", fontSize: "1.5rem" }} />{" "}
-            Sign in with Google
-          </button>
-        </form>
+            <TextField
+              id="password"
+              label="Password"
+              variant="outlined"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+              sx={{
+                my: 2,
+                borderColor: getFieldError("password") ? "red" : undefined,
+              }}
+            />
+            {getFieldError("password") && (
+              <span className="error">{getFieldError("password")}</span>
+            )}
+
+            <button onClick={handleSignUp}>Login</button>
+            <Typography
+              sx={{ display: "flex", mt: ".5rem", fontSize: ".8rem" }}
+            >
+              <span>
+                New User?
+                <Button
+                  variant="text"
+                  sx={{
+                    fontSize: ".7rem",
+                    ml: 2,
+                    color: "rgba(120, 170, 145)",
+                  }}
+                  onClick={toggleForm}
+                >
+                  Create an account
+                </Button>
+              </span>
+            </Typography>
+          </form>
+        )}
         {currentUser && (
           <Typography sx={{ display: "flex", mt: ".5rem", fontSize: ".8rem" }}>
             Forgot your password?{" "}
             <Link href="/reset-password">Reset Password</Link>
           </Typography>
         )}
-        <Typography
-          sx={{ display: "flex", mt: ".5rem", fontSize: ".8rem" }}
-          onClick={handleToggleForm}
-        >
-          {currentUser ? "Create an account" : "Already have an account?"}
-        </Typography>
       </Box>
     </Box>
   );
