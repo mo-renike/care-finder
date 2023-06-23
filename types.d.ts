@@ -2,17 +2,17 @@ type Hospital = {
   business_status: string;
   geometry: {
     location: { lat: number; lng: number };
-    viewport: {
+    viewport?: {
       northeast: { lat: number; lng: number };
       southwest: { lat: number; lng: number };
     };
   };
-  icon: string;
-  icon_background_color: string;
-  icon_mask_base_uri: string;
+  icon?: string;
+  icon_background_color?: string;
+  icon_mask_base_uri?: string;
   name: string;
   opening_hours: { open_now: boolean };
-  photos: {
+  photos?: {
     height: number;
     html_attributions: string[];
     photo_reference: string;
@@ -24,10 +24,10 @@ type Hospital = {
     global_code: string;
   };
   price_level: number;
-  rating: number;
+  rating?: number;
   reference: string;
   scope: string;
-  types: string[];
+  types?: string[];
   user_ratings_total: number;
   vicinity: string;
 };

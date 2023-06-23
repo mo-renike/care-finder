@@ -1,7 +1,7 @@
 "use client";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
-import { AppProvider } from "./theme-provider";
+import { AppProvider } from "./AppContext";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/error";
 import type { Metadata } from "next";

@@ -17,10 +17,16 @@ interface Hospital {
   photoUrl: string;
 }
 
-export const AppContext = createContext({});
+export const AppContext = createContext<AppContextType>({} as AppContextType);
 
 interface AppProviderProps {
   children: ReactNode;
+}
+interface AppContextType {
+  currentUser: any;
+  setCurrentUser: React.Dispatch<React.SetStateAction<any>>;
+  hospitals: Hospital[];
+  setHospitals: React.Dispatch<React.SetStateAction<Hospital[]>>;
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {

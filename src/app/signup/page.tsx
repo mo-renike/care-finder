@@ -11,8 +11,9 @@ import {
   Radio,
   Button,
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
+  auth,
   emailSignIn,
   emailSignUp,
   signInWithGoogle,
@@ -22,7 +23,9 @@ import Image from "next/image";
 import loginImg from "@/assets/stethoscope.jpg";
 import { useFormik } from "formik";
 import { FcGoogle } from "react-icons/fc";
-import { AppContext } from "../theme-provider";
+import { AppContext } from "../AppContext";
+import { ShowToast, ToastType } from "toastification/Toast";
+import "toastification/dist/Toast.css";
 
 interface FormValues {
   email: string;
@@ -49,7 +52,7 @@ const validate = (values: FormValues) => {
 };
 
 interface loginProps {
-  setCurrentUser: any;
+  setCurrentUser: React.Dispatch<React.SetStateAction<boolean>>;
   currentUser: any;
 }
 const Page = (props: loginProps) => {
@@ -70,10 +73,11 @@ const Page = (props: loginProps) => {
       if (currentUser) {
         // Handle login
         await emailSignIn(values.email, values.password);
+        ShowToast(ToastType.Successful, "Sign Up successful!");
       } else {
         // Handle sign up
         await emailSignUp(values.email, values.password);
-        console.log("sign up successful");
+        ShowToast(ToastType.Successful, "Sign Up successful!");
       }
     },
   });
@@ -81,14 +85,17 @@ const Page = (props: loginProps) => {
   const getFieldError = (field: keyof FormValues) =>
     formik.touched[field] && formik.errors[field];
 
-  const handleToggleForm = () => {
-    setCurrentUser(!currentUser); // Toggle authentication status
-    formik.resetForm(); // Reset form values
-  };
   const handleSignUp = () => {
     emailSignUp(formik.values.email, formik.values.password);
   };
-
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        const client = auth.currentUser;
+        setCurrentUser(client);
+      }
+    });
+  }, [setCurrentUser]);
   return (
     <Box>
       <Box

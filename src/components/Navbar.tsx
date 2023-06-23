@@ -18,10 +18,12 @@ import {
   AiOutlineSearch,
   AiOutlineLogin,
   AiOutlinePlus,
+  AiOutlineArrowDown,
 } from "react-icons/ai";
 import { MdOutlineLocalHospital } from "react-icons/md";
-import { AppContext } from "@/app/theme-provider";
+import { AppContext } from "@/app/AppContext";
 import { signOut } from "@/app/services/firebase/firebase";
+import Image from "next/image";
 
 const Navbar = () => {
   const { currentUser } = useContext(AppContext);
@@ -53,9 +55,9 @@ const Navbar = () => {
             <Typography>Find Hospitals</Typography>
           </Link>
           {currentUser ? (
-            <Link href="/#find-hospitals">
+            <Link href="/add-hospital">
               <AiOutlinePlus />
-              <Typography>Find Hospitals</Typography>
+              <Typography>Add Hospitals</Typography>
             </Link>
           ) : (
             ""
@@ -78,3 +80,22 @@ const Navbar = () => {
 };
 
 export default Navbar;
+// <Box>
+//   <Box sx={{ display: "flex" }}>
+//     {" "}
+//     <Image
+//       width={100}
+//       height={100}
+//       src={currentUser?.photoURL}
+//       alt="DP"
+//     />
+//     <Typography>
+//       {currentUser?.displayName} <AiOutlineArrowDown />
+//     </Typography>
+//   </Box>
+
+//   <Button onClick={signOut}>
+//     <AiOutlineLogin />
+//     <Typography>Logout</Typography>
+//   </Button>
+// </Box>
