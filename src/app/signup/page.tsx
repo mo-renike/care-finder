@@ -24,8 +24,8 @@ import loginImg from "@/assets/stethoscope.jpg";
 import { useFormik } from "formik";
 import { FcGoogle } from "react-icons/fc";
 import { AppContext } from "../AppContext";
-import { ShowToast, ToastType } from "toastification/Toast";
-import "toastification/dist/Toast.css";
+//import { ShowToast, ToastType } from "toastification/Toast";
+//import "toastification/dist/Toast.css";
 
 interface FormValues {
   email: string;
@@ -73,11 +73,11 @@ const Page = (props: loginProps) => {
       if (currentUser) {
         // Handle login
         await emailSignIn(values.email, values.password);
-        ShowToast(ToastType.Successful, "Sign Up successful!");
+        // ShowToast(ToastType.Successful, "Sign Up successful!");
       } else {
         // Handle sign up
         await emailSignUp(values.email, values.password);
-        ShowToast(ToastType.Successful, "Sign Up successful!");
+        // ShowToast(ToastType.Successful, "Sign Up successful!");
       }
     },
   });

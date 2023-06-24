@@ -30,4 +30,5 @@ type Hospital = {
   types?: string[];
   user_ratings_total: number;
   vicinity: string;
+  wheelchair_accessible: boolean;
 };

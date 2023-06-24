@@ -8,6 +8,7 @@ const HospitalsList = () => {
   const [latitude, setLatitude] = useState(6.1244);
   const [longitude, setLongitude] = useState(3.3792);
   const [placeId, setPlaceId] = useState("");
+  const [details, setDetails] = useState<Hospital[]>([]);
 
   const cities: string[] = [
     "Lagos",
@@ -38,12 +39,16 @@ const HospitalsList = () => {
         } else {
           const data = await res.json();
           setHospitals(data.results);
-          console.log(data.results, "data");
+          const placeIds = data.results.map(
+            (hospital: { place_id: any }) => hospital.place_id
+          );
+          setPlaceId(placeIds);
         }
       } catch (error) {
         console.log(error);
       }
     };
+
     getHospitals();
 
     const findLocation = async () => {
@@ -65,24 +70,30 @@ const HospitalsList = () => {
       }
     };
     findLocation();
+  }, [latitude, location, longitude]);
 
+  useEffect(() => {
     const getDetails = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/detaiils?id=${placeId}`);
-        if (!res.ok) {
-          throw new Error("Something went wrong");
-        } else {
-          const data = await res.json();
-          console.log(data);
-
-          setPlaceId(data);
+        const detailsArray = [];
+        for (const id of placeId) {
+          const res = await fetch(`http://localhost:8080/details?id=${id}`);
+          if (!res.ok) {
+            throw new Error("Something went wrong");
+          } else {
+            const data = await res.json();
+            console.log(data, "details");
+            detailsArray.push(data.results);
+          }
         }
+        setDetails(detailsArray);
       } catch (error) {
         console.log(error);
       }
     };
+
     getDetails();
-  }, [latitude, location, longitude, placeId]);
+  }, [placeId]);
 
   return (
     <Box sx={{ p: "4rem 2rem" }} id="find-hospitals">
@@ -142,7 +153,7 @@ const HospitalsList = () => {
             </Typography>
           </Box>
           <Grid container columnSpacing={2}>
-            {hospitals.map((hospital) => (
+            {hospitals.map((hospital, index) => (
               <Grid item xs={12} sm={6} md={4} key={hospital.place_id}>
                 <Box
                   sx={{
@@ -153,7 +164,19 @@ const HospitalsList = () => {
                   }}
                 >
                   <Typography variant="h6">{hospital.name}</Typography>
-                  <Typography variant="body2">{hospital.vicinity}</Typography>
+                  {/* <Typography variant="body2">{hospital.vicinity}</Typography> */}
+                  {/* Additional details */}
+                  {details[index] && (
+                    <>
+                      <Typography variant="body2">
+                        Address: {details[index].formatted_address}
+                      </Typography>
+                      <Typography variant="body2">
+                        Phone: {details[index].formatted_phone_number}
+                      </Typography>
+                      {/* Display any other desired details */}
+                    </>
+                  )}
                 </Box>
               </Grid>
             ))}
