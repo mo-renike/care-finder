@@ -7,6 +7,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getStorage, ref } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCOod7rkj8bJRx2ZYrhGzmjIqbieYbbSj8",
@@ -38,6 +39,8 @@ export const emailSignIn = (email: any, password: any) => {
 
 // Sign out
 export const signOut = () => getAuth().signOut();
+// storage
+export const storage = getStorage(app);
 
 // firestore
 export const db = getFirestore(app);

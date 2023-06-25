@@ -24,8 +24,8 @@ import loginImg from "@/assets/stethoscope.jpg";
 import { useFormik } from "formik";
 import { FcGoogle } from "react-icons/fc";
 import { AppContext } from "../AppContext";
-//import { ShowToast, ToastType } from "toastification/Toast";
-//import "toastification/dist/Toast.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FormValues {
   email: string;
@@ -57,7 +57,7 @@ interface loginProps {
 }
 const Page = (props: loginProps) => {
   const { currentUser, setCurrentUser } = useContext(AppContext);
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(true);
   const toggleForm = () => {
     setToggle(!toggle);
   };
@@ -69,15 +69,42 @@ const Page = (props: loginProps) => {
     },
     validate,
     onSubmit: async (values) => {
-      console.log(values, "values");
+      toast.success(`Welcome, ${values.name}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       if (currentUser) {
         // Handle login
         await emailSignIn(values.email, values.password);
-        // ShowToast(ToastType.Successful, "Sign Up successful!");
+        toast.success("Login Successful!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else {
         // Handle sign up
         await emailSignUp(values.email, values.password);
-        // ShowToast(ToastType.Successful, "Sign Up successful!");
+        toast.success("Sign Up Successful!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     },
   });
@@ -274,6 +301,19 @@ const Page = (props: loginProps) => {
           </Typography>
         )}
       </Box>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <ToastContainer />
     </Box>
   );
 };

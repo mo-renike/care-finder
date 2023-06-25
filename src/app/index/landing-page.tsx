@@ -1,6 +1,7 @@
 "use client";
 
 import About from "@/components/About";
+import ExportedList from "@/components/ExportedList";
 import Hero from "@/components/Hero";
 import HospitalsList from "@/components/HospitalsList";
 import { Box } from "@mui/material";
@@ -14,6 +15,7 @@ const Index = (props: Props) => {
       <Hero />
       <About />
       <HospitalsList />
+      <ExportedList />
     </Box>
   );
 };
