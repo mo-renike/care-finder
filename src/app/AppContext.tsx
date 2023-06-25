@@ -27,11 +27,14 @@ interface AppContextType {
   setCurrentUser: React.Dispatch<React.SetStateAction<any>>;
   hospitals: Hospital[];
   setHospitals: React.Dispatch<React.SetStateAction<Hospital[]>>;
+  exportedHospitals: string[];
+  setExportedHospitals: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
+  const [exportedHospitals, setExportedHospitals] = useState<string[]>([]);
 
   return (
     <AppContext.Provider
@@ -40,6 +43,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setCurrentUser,
         hospitals,
         setHospitals,
+        exportedHospitals,
+        setExportedHospitals,
       }}
     >
       {children}

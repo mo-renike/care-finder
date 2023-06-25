@@ -27,7 +27,7 @@ import Image from "next/image";
 
 const Navbar = () => {
   const { currentUser } = useContext(AppContext);
-  console.log(currentUser, "navbar");
+  //console.log(currentUser, "navbar");
 
   return (
     <AppBar

@@ -1,12 +1,9 @@
 "use client";
 import { AppContext } from "@/app/AppContext";
-import { auth, db, storage } from "@/app/services/firebase/firebase";
+import { auth, storage } from "@/app/services/firebase/firebase";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import { ActionCodeSettings, Auth } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
-import { ref, uploadString } from "firebase/storage";
-import { useState, useEffect, useContext } from "react";
-import { useRouter } from "next/navigation";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "@/components/Loader";
@@ -20,13 +17,16 @@ const HospitalsList = () => {
   const [details, setDetails] = useState<Hospital[]>([]);
 
   const cities: string[] = [
-    "Lagos",
+    "Lekki",
     "Abuja",
+    "Yaba",
     "Port Harcourt",
     "Ibadan",
+    "Ilorin",
     "Kano",
     "calabar",
     "Benin City",
+    "Abeokuta",
     "Jos",
     "Enugu",
   ];
@@ -102,11 +102,11 @@ const HospitalsList = () => {
 
     getDetails();
   }, [placeId]);
-  const { currentUser } = useContext(AppContext);
 
   const exportHospitals = async () => {
     try {
-      let csvData = "hospital name, address, phone, wheelchair accessibility\n";
+      let csvData =
+        "Hospital name, address, Phone Number, Wheelchair accessibility\n";
 
       for (let i = 0; i < hospitals.length; i++) {
         const hospital = hospitals[i];
@@ -132,8 +132,6 @@ const HospitalsList = () => {
 
       // Upload the CSV data to Firebase Storage
       await uploadString(storageRef, csvData);
-      //console.log("csvData", csvData);
-
       toast.success(`Hospitals in ${location} exported successfully!`, {
         position: "top-right",
         autoClose: 5000,
