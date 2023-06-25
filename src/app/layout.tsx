@@ -6,12 +6,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/error";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Carefinder | Find Hospitals",
-  description: "Find hospitals near you",
-  keywords: "hospitals, health, care, finder, carefinder",
-};
-
 export default function RootLayout({
   children,
 }: {
