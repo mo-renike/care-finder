@@ -51,7 +51,7 @@ const validate = (values: FormValues) => {
 };
 
 interface loginProps {
-  //setCurrentUser: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentUser: React.Dispatch<React.SetStateAction<boolean>>;
   currentUser: any;
 }
 const Page = (props: loginProps) => {
