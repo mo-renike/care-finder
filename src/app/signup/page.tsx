@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import {
-  auth,
   emailSignIn,
   emailSignUp,
   signInWithGoogle,
@@ -52,11 +51,11 @@ const validate = (values: FormValues) => {
 };
 
 interface loginProps {
-  setCurrentUser: React.Dispatch<React.SetStateAction<boolean>>;
+  //setCurrentUser: React.Dispatch<React.SetStateAction<boolean>>;
   currentUser: any;
 }
 const Page = (props: loginProps) => {
-  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const { currentUser } = useContext(AppContext);
   const [toggle, setToggle] = useState(true);
   const toggleForm = () => {
     setToggle(!toggle);
@@ -115,14 +114,6 @@ const Page = (props: loginProps) => {
   const handleSignUp = () => {
     emailSignUp(formik.values.email, formik.values.password);
   };
-  useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const client = auth.currentUser;
-        setCurrentUser(client);
-      }
-    });
-  }, [setCurrentUser]);
   return (
     <Box>
       <Box
@@ -215,26 +206,6 @@ const Page = (props: loginProps) => {
                 </Button>
               </span>
             </Typography>
-
-            <Typography
-              sx={{
-                display: "flex",
-                mt: ".5rem",
-                fontSize: "1.2rem",
-                fontWeight: "bold",
-                my: 3,
-                mx: "auto",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              Or
-            </Typography>
-
-            <button type="button" className="button" onClick={signInWithGoogle}>
-              <FcGoogle style={{ marginRight: "2rem", fontSize: "1.5rem" }} />{" "}
-              Sign in with Google
-            </button>
           </form>
         ) : (
           <form
@@ -294,12 +265,36 @@ const Page = (props: loginProps) => {
             </Typography>
           </form>
         )}
-        {currentUser && (
+        {/* {currentUser && (
           <Typography sx={{ display: "flex", mt: ".5rem", fontSize: ".8rem" }}>
             Forgot your password?{" "}
             <Link href="/reset-password">Reset Password</Link>
           </Typography>
-        )}
+        )} */}
+        <Typography
+          sx={{
+            display: "flex",
+            mt: ".5rem",
+            fontSize: "1.2rem",
+            fontWeight: "bold",
+            my: 3,
+            mx: "auto",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          Or
+        </Typography>
+
+        <button
+          type="button"
+          className="button"
+          style={{ width: "100%", padding: ".5rem" }}
+          onClick={signInWithGoogle}
+        >
+          <FcGoogle style={{ marginRight: "1rem", fontSize: "1.5rem" }} />
+          <Typography> Sign in with Google</Typography>
+        </button>
       </Box>
       <ToastContainer
         position="top-right"

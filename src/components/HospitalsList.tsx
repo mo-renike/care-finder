@@ -7,14 +7,21 @@ import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "@/components/Loader";
+import Pagination from "@mui/material/Pagination";
 
 const HospitalsList = () => {
   const [location, setLocation] = useState("Ibadan");
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
-  const [latitude, setLatitude] = useState(6.1244);
-  const [longitude, setLongitude] = useState(3.3792);
-  const [placeId, setPlaceId] = useState("");
-  const [details, setDetails] = useState<Hospital[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filteredHospitals, setFilteredHospitals] = useState<Hospital[]>([]);
+
+  const itemsPerPage = 6;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentHospitals = filteredHospitals.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const cities: string[] = [
     "Lekki",
@@ -25,7 +32,9 @@ const HospitalsList = () => {
     "Ilorin",
     "Kano",
     "calabar",
-    "Benin City",
+    "Lagos Island",
+    "Ikorodu",
+    "Benin",
     "Abeokuta",
     "Jos",
     "Enugu",
@@ -34,26 +43,17 @@ const HospitalsList = () => {
   useEffect(() => {
     const getHospitals = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:8080/hospitals?latitude=${latitude}&longitude=${longitude}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const res = await fetch(`https://api.reliancehmo.com/v3/providers?`);
         if (!res.ok) {
           throw new Error("Something went wrong");
         } else {
           const data = await res.json();
-          console.log(data, "data");
-
-          setHospitals(data.results);
-          const placeIds = data.results.map(
-            (hospital: { place_id: any }) => hospital.place_id
+          const filteredData = data.data.filter(
+            (hospital: Hospital) => hospital.location == location
           );
-          setPlaceId(placeIds);
+          setHospitals(filteredData);
+          setFilteredHospitals(filteredData);
+          setCurrentPage(1); // Reset current page to 1 when location changes
         }
       } catch (error) {
         console.log(error);
@@ -61,76 +61,22 @@ const HospitalsList = () => {
     };
 
     getHospitals();
-
-    const findLocation = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:8080/findplace?location=${location}`
-        );
-        if (!res.ok) {
-          throw new Error("Something went wrong");
-        } else {
-          const data = await res.json();
-          setLatitude(data.candidates[0].geometry.location.lat);
-          setLongitude(data.candidates[0].geometry.location.lng);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    findLocation();
-  }, [latitude, location, longitude]);
-
-  useEffect(() => {
-    const getDetails = async () => {
-      try {
-        const detailsArray = [];
-        for (const id of placeId) {
-          const res = await fetch(`http://localhost:8080/details?id=${id}`);
-          if (!res.ok) {
-            throw new Error("Something went wrong");
-          } else {
-            const data = await res.json();
-            detailsArray.push(data.result);
-          }
-        }
-        setDetails(detailsArray);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getDetails();
-  }, [placeId]);
+  }, [location]);
 
   const exportHospitals = async () => {
     try {
-      let csvData =
-        "Hospital name, address, Phone Number, Wheelchair accessibility\n";
+      let csvData = "Hospital name, address,";
 
-      for (let i = 0; i < hospitals.length; i++) {
-        const hospital = hospitals[i];
-        const detail = details[i];
+      for (let i = 0; i < currentHospitals.length; i++) {
+        const hospital = currentHospitals[i];
+        const { name, address } = hospital;
 
-        const { name } = hospital;
-        const {
-          wheelchair_accessible_entrance,
-          formatted_address,
-          formatted_phone_number,
-        } = detail;
-
-        const row = `${name}, ${formatted_address}, ${formatted_phone_number}, ${
-          wheelchair_accessible_entrance
-            ? "Wheelchair Accessible"
-            : "Not Wheelchair Accessible"
-        }\n`;
+        const row = `${name}, ${address}`;
         csvData += row;
       }
 
-      // Create a reference to the file in Firebase Storage
       const storageRef = ref(storage, `hospitals/${location}_hospitals.csv`);
 
-      // Upload the CSV data to Firebase Storage
       await uploadString(storageRef, csvData);
       toast.success(`Hospitals in ${location} exported successfully!`, {
         position: "top-right",
@@ -225,11 +171,11 @@ const HospitalsList = () => {
             </button>
           </Box>
           <Grid container columnSpacing={2}>
-            {!hospitals.length || !details.length ? (
+            {!filteredHospitals.length ? (
               <Loader />
             ) : (
-              hospitals.map((hospital, index) => (
-                <Grid item xs={12} sm={6} md={6} key={hospital.place_id}>
+              currentHospitals.map((hospital, index) => (
+                <Grid item xs={12} sm={6} md={6} key={hospital.id}>
                   <Box
                     sx={{
                       padding: ".7rem",
@@ -243,37 +189,21 @@ const HospitalsList = () => {
                     >
                       {hospital.name}
                     </Typography>
-                    {details[index] && (
-                      <>
-                        <Typography
-                          style={{ fontSize: ".8rem" }}
-                          variant="body2"
-                        >
-                          <b>Address:</b> {details[index].formatted_address}
-                        </Typography>
-                        <Typography
-                          style={{ fontSize: ".8rem" }}
-                          variant="body2"
-                        >
-                          <b>Phone: </b>{" "}
-                          {details[index].formatted_phone_number
-                            ? details[index].formatted_phone_number
-                            : "Number not provided"}
-                        </Typography>
-                        <Typography style={{ fontSize: ".8rem" }}>
-                          {" "}
-                          {details[index].wheelchair_accessible_entrance ===
-                          true
-                            ? "Wheelhair Accessible"
-                            : "Not wheelchair Accessible"}
-                        </Typography>
-                      </>
-                    )}
+                    <Typography style={{ fontSize: "1rem", fontWeight: "500" }}>
+                      {hospital.address}
+                    </Typography>
                   </Box>
                 </Grid>
               ))
             )}
           </Grid>
+          <Pagination
+            count={Math.ceil(filteredHospitals.length / itemsPerPage)}
+            page={currentPage}
+            onChange={(event, value) => setCurrentPage(value)}
+            color="primary"
+            sx={{ marginTop: "2rem", alignSelf: "center" }}
+          />
         </Grid>
       </Grid>
       <ToastContainer

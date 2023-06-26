@@ -24,15 +24,29 @@ import { MdOutlineLocalHospital } from "react-icons/md";
 import { AppContext } from "@/app/AppContext";
 import { signOut } from "@/app/services/firebase/firebase";
 import Image from "next/image";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
   const { currentUser } = useContext(AppContext);
-  //console.log(currentUser, "navbar");
 
+  const handleSignout = () => {
+    signOut();
+    toast.success("Sign out Successful!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+    window.location.reload();
+  };
   return (
     <AppBar
       sx={{
-        backgroundColor: "rgba(255, 255, 255, 0.6)",
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
         zIndex: 100,
       }}
@@ -64,7 +78,7 @@ const Navbar = () => {
             ""
           )}
           {currentUser ? (
-            <Button onClick={signOut}>
+            <Button onClick={handleSignout}>
               <AiOutlineLogin />
               <Typography>Logout</Typography>
             </Button>
@@ -76,6 +90,19 @@ const Navbar = () => {
           )}
         </Box>
       </Toolbar>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <ToastContainer />
     </AppBar>
   );
 };

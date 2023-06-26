@@ -20,7 +20,7 @@ const ExportedList = () => {
         // Iterate through each exported hospital file
         for (const item of listResult.items) {
           const downloadURL = await getDownloadURL(item);
-          console.log(downloadURL, "downloadURL");
+          //console.log(downloadURL, "downloadURL");
 
           // Add the exported hospital to the list
           hospitalsList.push({
