@@ -3,7 +3,7 @@ import { AppContext } from "@/app/AppContext";
 import { auth, storage } from "@/app/services/firebase/firebase";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "@/components/Loader";
@@ -165,7 +165,9 @@ const HospitalsList = () => {
               }}
               label="Enter location"
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                setLocation(e.target.value)
+              }
             />
             <button onClick={() => exportHospitals()} className="button">
               Export Hospital List

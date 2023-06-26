@@ -18,8 +18,6 @@ import {
   signInWithGoogle,
 } from "@/app/services/firebase/firebase";
 import Link from "next/link";
-import Image from "next/image";
-import loginImg from "@/assets/stethoscope.jpg";
 import { useFormik } from "formik";
 import { FcGoogle } from "react-icons/fc";
 import { AppContext } from "../AppContext";
