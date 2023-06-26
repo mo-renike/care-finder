@@ -38,6 +38,7 @@ const HospitalsList = () => {
     "Abeokuta",
     "Jos",
     "Enugu",
+    "Ikeja",
   ];
 
   useEffect(() => {
