@@ -1,4 +1,5 @@
 type Hospital = {
+  location: string;
   id: Key | null | undefined;
   address: ReactNode;
   formatted_phone_number: ReactNode;
