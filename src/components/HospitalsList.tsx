@@ -180,7 +180,9 @@ const HospitalsList = () => {
               }}
               label="Enter location"
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                setLocation(e.target.value)
+              }
             />
             <button onClick={() => exportHospitals()} className="button">
               Export Hospital List
