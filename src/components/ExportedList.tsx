@@ -99,7 +99,7 @@ const ExportedList = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Share
+                Share via Email
               </a>
             </Grid>
           </Grid>

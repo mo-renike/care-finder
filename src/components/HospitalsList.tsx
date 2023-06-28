@@ -10,7 +10,7 @@ import Loader from "@/components/Loader";
 import Pagination from "@mui/material/Pagination";
 
 const HospitalsList = () => {
-  const [location, setLocation] = useState("Ibadan");
+  const [location, setLocation] = useState("Lagos");
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredHospitals, setFilteredHospitals] = useState<Hospital[]>([]);
@@ -40,7 +40,6 @@ const HospitalsList = () => {
     "Enugu",
     "Ikeja",
   ];
-
   useEffect(() => {
     const getHospitals = async () => {
       try {
@@ -48,19 +47,21 @@ const HospitalsList = () => {
         if (!res.ok) {
           throw new Error("Something went wrong");
         } else {
-          const data = await res.json();
-          const filteredData = data.data.filter(
-            (hospital: Hospital) => hospital.location == location
-          );
+          const result = await res.json();
+          const data = result.data;
+          const filteredData = data.filter((hospital: Hospital) => {
+            return hospital.address
+              .toLowerCase()
+              .includes(location.toLowerCase());
+          });
           setHospitals(filteredData);
           setFilteredHospitals(filteredData);
-          setCurrentPage(1); // Reset current page to 1 when location changes
+          setCurrentPage(1);
         }
       } catch (error) {
         console.log(error);
       }
     };
-
     getHospitals();
   }, [location]);
 
@@ -76,7 +77,7 @@ const HospitalsList = () => {
         csvData += row;
       }
 
-      const storageRef = ref(storage, `hospitals/${location}_hospitals.csv`);
+      const storageRef = ref(storage, `hospitals/hospitals_in_${location}.csv`);
 
       await uploadString(storageRef, csvData);
       toast.success(`Hospitals in ${location} exported successfully!`, {
@@ -165,9 +166,7 @@ const HospitalsList = () => {
               }}
               label="Enter location"
               value={location}
-              onChange={(e: { target: { value: SetStateAction<string> } }) =>
-                setLocation(e.target.value)
-              }
+              onChange={(e) => setLocation(e.target.value)}
             />
             <button onClick={() => exportHospitals()} className="button">
               Export Hospital List
