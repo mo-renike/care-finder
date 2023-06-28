@@ -30,9 +30,10 @@ const mdParser = new MarkdownIt();
 
 const Page: React.FC = () => {
   const [markdownContent, setMarkdownContent] = useState("");
-  const handleEditorChange = ({ text }) => {
+  const handleEditorChange = ({ text }: { text: string }) => {
     setMarkdownContent(text);
   };
+
   const Formik = useFormik({
     initialValues: {
       name: "",
