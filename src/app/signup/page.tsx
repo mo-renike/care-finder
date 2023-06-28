@@ -48,11 +48,7 @@ const validate = (values: FormValues) => {
   return errors;
 };
 
-interface loginProps {
-  setCurrentUser: React.Dispatch<React.SetStateAction<boolean>>;
-  currentUser: any;
-}
-const Page = (props: loginProps) => {
+const Page = () => {
   const { currentUser } = useContext(AppContext);
   const [toggle, setToggle] = useState(true);
   const toggleForm = () => {

@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { storage } from "@/app/services/firebase/firebase";
 import { Box, Grid, Typography } from "@mui/material";
+import { AppContext } from "@/app/AppContext";
 
 const ExportedList = () => {
   const [exportedHospitals, setExportedHospitals] = useState<
     { filename: string; downloadURL: string }[]
   >([]);
+  const { currentUser } = useContext(AppContext);
 
   useEffect(() => {
     const fetchExportedHospitals = async () => {
@@ -56,10 +58,17 @@ const ExportedList = () => {
       <Typography sx={{ textAlign: "center" }} variant="h3">
         Exported Hospitals
       </Typography>
-      <Typography variant="body1">
-        Here is a list of your exported hospital lists. You can download the CSV
-        file or share the link with others.
-      </Typography>
+      {!currentUser ? (
+        <Typography sx={{ textAlign: "center" }}>
+          You need to be logged in to view exported hospitals.
+        </Typography>
+      ) : (
+        <Typography variant="body1">
+          Here is a list of your exported hospital lists. You can download the
+          CSV file or share the link with others.
+        </Typography>
+      )}
+
       {exportedHospitals ? (
         exportedHospitals.map((hospital) => (
           <Grid

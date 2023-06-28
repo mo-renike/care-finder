@@ -3,13 +3,14 @@ import { AppContext } from "@/app/AppContext";
 import { auth, storage } from "@/app/services/firebase/firebase";
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useState, useEffect, SetStateAction } from "react";
+import { useState, useEffect, SetStateAction, useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "@/components/Loader";
 import Pagination from "@mui/material/Pagination";
 
 const HospitalsList = () => {
+  const { currentUser } = useContext(AppContext);
   const [location, setLocation] = useState("Lagos");
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,6 +67,19 @@ const HospitalsList = () => {
   }, [location]);
 
   const exportHospitals = async () => {
+    if (!currentUser) {
+      toast.error("You need to be logged in to export hospitals!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
     try {
       let csvData = "Hospital name, address,";
 
