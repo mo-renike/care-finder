@@ -1,4 +1,5 @@
 "use client";
+import Head from "next/head";
 
 import About from "@/components/About";
 import ExportedList from "@/components/ExportedList";
@@ -25,6 +26,13 @@ const Index = (props: Props) => {
 
   return (
     <Box>
+      <Head>
+        <title> Home | CareFinder</title>
+        <meta
+          name="description"
+          content="CareFinder is a platform that helps you find the best hospitals in Nigeria"
+        />
+      </Head>
       <Hero />
       <About />
       <HospitalsList />

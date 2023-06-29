@@ -1,4 +1,5 @@
 "use client";
+import Head from "next/head";
 import {
   Box,
   Grid,
@@ -127,6 +128,13 @@ const Page = () => {
 
   return (
     <Box>
+      <Head>
+        <title>Sign in | CareFinder</title>
+        <meta
+          name="description"
+          content="Login or Sign up to CareFinder to find the best care for your loved ones"
+        />
+      </Head>
       <Box
         sx={{
           p: 4,

@@ -59,6 +59,5 @@ export const addData: any = async (
   } catch (err) {
     error = err;
   }
-
   return { result, error };
 };

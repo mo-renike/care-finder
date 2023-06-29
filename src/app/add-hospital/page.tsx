@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 import MarkdownIt from "markdown-it";
+import Head from "next/head";
 
 interface FormValues {
   name: string;
@@ -51,8 +52,16 @@ const Page: React.FC = () => {
   });
 
   const { handleChange, handleSubmit, values, errors } = Formik;
+
   return (
     <Box>
+      <Head>
+        <title>Add Hospitals | CareFinder</title>
+        <meta
+          name="description"
+          content="Add hospitals to the list of hospitals on the platform"
+        />
+      </Head>
       <Box
         sx={{
           p: 4,
