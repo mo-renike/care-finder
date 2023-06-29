@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import steth from "@/assets/hospital.jpg";
 import Link from "next/link";
@@ -7,16 +7,18 @@ import { AiOutlineSearch } from "react-icons/ai";
 type Props = {};
 
 const Hero = (props: Props) => {
+  const isMobile = useMediaQuery("(max-width: 600px)");
+
   return (
     <Box
       sx={{
-        backgroundImage: `url(${steth.src})`,
+        backgroundImage: `url(https://images.pexels.com/photos/6303586/pexels-photo-6303586.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "90vh",
+        height: isMobile ? "80vh" : "100vh",
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         alignItems: "center",
         "&:after": {
           content: '""',
@@ -24,7 +26,7 @@ const Hero = (props: Props) => {
           top: 0,
           left: 0,
           width: "100%",
-          height: "90vh",
+          height: isMobile ? "80vh" : "100vh",
           backgroundColor: "rgba(0,0,0,0)",
         },
       }}
@@ -32,19 +34,27 @@ const Hero = (props: Props) => {
       <Box
         sx={{
           padding: "1rem",
-          maxWidth: "600px",
+          maxWidth: "500px",
           zIndex: "12",
-          textAlign: "center",
-          boxShadow: "0 0 3px rgba(0, 0, 0, 0.2)",
+          textAlign: isMobile ? "center" : "left",
+          // boxShadow: "0 0 3px rgba(0, 0, 0, 0.2)",
           borderRadius: "10px",
-          backgroundColor: "rgba(255, 255, 255, 0.2)",
+          // backgroundColor: "rgba(255, 255, 255, 0.2)",
+          marginLeft: isMobile ? "0" : "5rem",
         }}
       >
-        <Typography variant="h3">Carefinder</Typography>
+        <Typography variant="h1">Find Hospitals closest to you</Typography>
         <Typography>
-          Get easy access to healthcare services around you
+          Get information about hospitals in your location and share your
+          experience with others.
         </Typography>
-        <Link href="/#find-hospitals">
+        <Link
+          href="/#find-hospitals"
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+          }}
+        >
           <button style={{ padding: "3px 1rem" }}>
             <AiOutlineSearch style={{ marginRight: "10px" }} />
             <Typography>Find Hospitals in your location</Typography>

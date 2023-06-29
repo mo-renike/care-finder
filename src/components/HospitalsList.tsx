@@ -1,7 +1,14 @@
 "use client";
 import { AppContext } from "@/app/AppContext";
 import { auth, storage } from "@/app/services/firebase/firebase";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useState, useEffect, SetStateAction, useContext } from "react";
 import { ToastContainer, toast } from "react-toastify";
@@ -41,6 +48,9 @@ const HospitalsList = () => {
     "Enugu",
     "Ikeja",
   ];
+
+  const isMobile = useMediaQuery("(max-width: 600px)");
+
   useEffect(() => {
     const getHospitals = async () => {
       try {
@@ -133,30 +143,37 @@ const HospitalsList = () => {
           lg={2}
           sx={{
             padding: "1rem",
-            boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+            boxShadow: "0 0 3px rgba(0, 0, 0, 0.2)",
             borderRadius: "10px",
             height: "fit-content",
           }}
         >
-          <Box>
-            <Typography variant="h6">Nearby Cities</Typography>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-              }}
-            >
-              {cities.map((city) => (
-                <Button
-                  key={city}
-                  sx={{ textTransform: "capitalize" }}
-                  onClick={() => setLocation(city)}
-                >
-                  {city}
-                </Button>
-              ))}
-            </Box>
+          <Typography variant="h6">Nearby Cities</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: isMobile ? "row" : "column",
+              overflowX: isMobile ? "auto" : "visible",
+              maxWidth: isMobile ? "100%" : "unset",
+              flexWrap: "nowrap",
+              //   pb: isMobile ? "1rem" : "unset",
+            }}
+          >
+            {cities.map((city) => (
+              <Button
+                variant="text"
+                key={city}
+                sx={{
+                  textTransform: "capitalize",
+                  whiteSpace: "nowrap",
+                  marginRight: isMobile ? "0.1rem" : "auto",
+                  minWidth: isMobile ? "unset" : "120px",
+                }}
+                onClick={() => setLocation(city)}
+              >
+                {city}
+              </Button>
+            ))}
           </Box>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={9}>
@@ -166,13 +183,15 @@ const HospitalsList = () => {
               justifyContent: "space-between",
               alignItems: "center",
               my: "1.5rem",
+              flexWrap: "wrap",
             }}
           >
-            <Typography sx={{ fontWeight: "bold", pr: "1rem" }}>
+            <Typography sx={{ my: 1, fontWeight: "bold", pr: "1rem" }}>
               Showing Hospitals in{" "}
             </Typography>{" "}
             <TextField
               sx={{
+                my: 1,
                 borderRadius: "10px",
                 border: "none",
                 mr: "auto",
@@ -188,12 +207,26 @@ const HospitalsList = () => {
               Export Hospital List
             </button>
           </Box>
-          <Grid container columnSpacing={2}>
+          <Grid
+            container
+            columnSpacing={isMobile ? 1 : 2}
+            rowSpacing={isMobile ? 2 : 0}
+          >
             {!filteredHospitals.length ? (
               <Loader />
             ) : (
               currentHospitals.map((hospital, index) => (
-                <Grid item xs={12} sm={6} md={6} key={hospital.id}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  sx={{
+                    width: isMobile ? "100%" : "unset",
+                    pr: isMobile ? "1rem" : "unset",
+                  }}
+                  key={hospital.id}
+                >
                   <Box
                     sx={{
                       padding: ".7rem",

@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Box,
   Grid,
@@ -54,7 +53,8 @@ const Page = () => {
   const toggleForm = () => {
     setToggle(!toggle);
   };
-  const formik = useFormik<FormValues>({
+
+  const signInFormik = useFormik<FormValues>({
     initialValues: {
       email: "",
       password: "",
@@ -72,42 +72,59 @@ const Page = () => {
         progress: undefined,
         theme: "light",
       });
-      if (currentUser) {
-        // Handle login
-        await emailSignIn(values.email, values.password);
-        toast.success("Login Successful!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else {
-        // Handle sign up
-        await emailSignUp(values.email, values.password);
-        toast.success("Sign Up Successful!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+      await emailSignIn(values.email, values.password);
+      toast.success("Login Successful!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    },
+  });
+
+  const signUpFormik = useFormik<FormValues>({
+    initialValues: {
+      email: "",
+      password: "",
+      name: "",
+    },
+    validate,
+    onSubmit: async (values) => {
+      toast.success(`Welcome, ${values.name}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      await emailSignUp(values.email, values.password);
+      toast.success("Sign Up Successful!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     },
   });
 
   const getFieldError = (field: keyof FormValues) =>
-    formik.touched[field] && formik.errors[field];
+    signUpFormik.touched[field] && signUpFormik.errors[field];
 
   const handleSignUp = () => {
-    emailSignUp(formik.values.email, formik.values.password);
+    signUpFormik.handleSubmit();
   };
+
   return (
     <Box>
       <Box
@@ -120,26 +137,22 @@ const Page = () => {
           mt: "7rem",
         }}
       >
-        <Typography variant="h4">
-          {currentUser ? "Login" : "Sign Up"}
-        </Typography>
-        <Typography sx={{ mb: 2 }}>
-          {currentUser
-            ? "Please log in to your account."
-            : "Please fill in this form to create an account."}
-        </Typography>
         {toggle ? (
           <form
-            onSubmit={formik.handleSubmit}
+            onSubmit={signUpFormik.handleSubmit}
             style={{ display: "flex", flexDirection: "column" }}
           >
+            <Typography variant="h3">Sign Up</Typography>
+            <Typography sx={{ mb: 2 }}>
+              Please fill in this form to create an account.
+            </Typography>
             <TextField
               id="name"
               label="Name"
               variant="outlined"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.name}
+              onChange={signUpFormik.handleChange}
+              onBlur={signUpFormik.handleBlur}
+              value={signUpFormik.values.name}
               sx={{
                 my: 2,
                 borderColor: getFieldError("name") ? "red" : undefined,
@@ -153,9 +166,9 @@ const Page = () => {
               id="email"
               label="Email"
               variant="outlined"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
+              onChange={signUpFormik.handleChange}
+              onBlur={signUpFormik.handleBlur}
+              value={signUpFormik.values.email}
               sx={{
                 my: 2,
                 borderColor: getFieldError("email") ? "red" : undefined,
@@ -169,9 +182,9 @@ const Page = () => {
               id="password"
               label="Password"
               variant="outlined"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
+              onChange={signUpFormik.handleChange}
+              onBlur={signUpFormik.handleBlur}
+              value={signUpFormik.values.password}
               sx={{
                 my: 2,
                 borderColor: getFieldError("password") ? "red" : undefined,
@@ -182,37 +195,50 @@ const Page = () => {
             )}
 
             <button onClick={handleSignUp}>Sign Up</button>
-            <Typography
-              sx={{ display: "flex", mt: ".5rem", fontSize: ".8rem" }}
+            <Box
+              sx={{
+                display: "flex",
+                textAlign: "center",
+              }}
             >
-              <span>
-                Already have an account?{" "}
-                <Button
-                  variant="text"
-                  sx={{
-                    fontSize: ".7rem",
-                    ml: 2,
-                    color: "rgba(120, 170, 145)",
-                  }}
-                  onClick={toggleForm}
-                >
-                  Login
-                </Button>
-              </span>
-            </Typography>
+              <Typography
+                sx={{
+                  display: "flex",
+                  mt: ".5rem",
+                  fontSize: ".7rem",
+                }}
+              >
+                Already have an account?
+              </Typography>
+              <Button
+                variant="text"
+                sx={{
+                  fontSize: ".7rem",
+                  textTransform: "capitalize",
+                  color: "rgba(120, 170, 145)",
+                }}
+                onClick={toggleForm}
+              >
+                Login
+              </Button>
+            </Box>
           </form>
         ) : (
           <form
-            onSubmit={formik.handleSubmit}
+            onSubmit={signInFormik.handleSubmit}
             style={{ display: "flex", flexDirection: "column" }}
           >
+            <Typography variant="h3">Login</Typography>
+            <Typography sx={{ mb: 2 }}>
+              Please log in to your account.
+            </Typography>
             <TextField
               id="email"
               label="Email"
               variant="outlined"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.email}
+              onChange={signInFormik.handleChange}
+              onBlur={signInFormik.handleBlur}
+              value={signInFormik.values.email}
               sx={{
                 my: 2,
                 borderColor: getFieldError("email") ? "red" : undefined,
@@ -226,9 +252,9 @@ const Page = () => {
               id="password"
               label="Password"
               variant="outlined"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
+              onChange={signInFormik.handleChange}
+              onBlur={signInFormik.handleBlur}
+              value={signInFormik.values.password}
               sx={{
                 my: 2,
                 borderColor: getFieldError("password") ? "red" : undefined,
@@ -239,24 +265,33 @@ const Page = () => {
             )}
 
             <button onClick={handleSignUp}>Login</button>
-            <Typography
-              sx={{ display: "flex", mt: ".5rem", fontSize: ".8rem" }}
+            <Box
+              sx={{
+                display: "flex",
+                textAlign: "center",
+              }}
             >
-              <span>
+              <Typography
+                sx={{
+                  display: "flex",
+                  mt: ".5rem",
+                  fontSize: ".7rem",
+                }}
+              >
                 New User?
-                <Button
-                  variant="text"
-                  sx={{
-                    fontSize: ".7rem",
-                    ml: 2,
-                    color: "rgba(120, 170, 145)",
-                  }}
-                  onClick={toggleForm}
-                >
-                  Create an account
-                </Button>
-              </span>
-            </Typography>
+              </Typography>
+              <Button
+                variant="text"
+                sx={{
+                  fontSize: ".7rem",
+                  textTransform: "capitalize",
+                  color: "rgba(120, 170, 145)",
+                }}
+                onClick={toggleForm}
+              >
+                Create an account
+              </Button>
+            </Box>
           </form>
         )}
         {/* {currentUser && (

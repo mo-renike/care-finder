@@ -21,7 +21,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["hoist-non-react-statics"]
   },
   "include": [
     "next-env.d.ts",
