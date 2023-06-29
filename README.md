@@ -1,34 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CareFinder
 
-## Getting Started
+This is a web application that allows users to find and export a list of hospitals based on their location. It provides a user-friendly interface to search for hospitals in different cities and export the list as a CSV file.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+- Search hospitals by location
+- View a list of hospitals based on the search criteria
+- Export the list of hospitals as a CSV file
+- Pagination for navigating through the list of hospitals
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- React.js: A JavaScript library for building user interfaces.
+- Material-UI: A popular React UI framework for designing responsive web applications.
+- Firebase: A cloud-based platform for building and managing web and mobile applications.
+- React Toastify: A library for displaying toast notifications in React applications.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Installation
 
-## Learn More
+1. Clone the repository: `git clone <https://github.com/mo-renike/care-finder>`
+2. Install the dependencies: `npm install`
+3. Set up Firebase:
+   - Create a Firebase project and enable Firebase Authentication and Firebase Storage.
+   - Obtain the Firebase configuration and replace the placeholders in the `firebase.js` file with your configuration details.
+4. Start the development server: `npm start`
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Open the application in your web browser.
+2. Enter a location in the search field to find hospitals in that area.
+3. The list of hospitals will be displayed below the search field.
+4. Use the pagination buttons to navigate through the list of hospitals.
+5. Click the "Export Hospital List" button to export the current list of hospitals as a CSV file.
+6. Toast notifications will appear to provide feedback on the export process.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contributing
 
-## Deploy on Vercel
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Acknowledgments
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- This project was developed as part of a learning exercise for AltSchool and is not affiliated with any real-world healthcare organizations.
