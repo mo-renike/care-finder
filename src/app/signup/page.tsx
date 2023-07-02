@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import Head from "next/head";
 import {
   Box,
@@ -54,6 +55,7 @@ const Page = () => {
   const toggleForm = () => {
     setToggle(!toggle);
   };
+  const router = useRouter();
 
   const signInFormik = useFormik<FormValues>({
     initialValues: {
@@ -63,16 +65,6 @@ const Page = () => {
     },
     validate,
     onSubmit: async (values) => {
-      toast.success(`Welcome, ${values.name}`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       await emailSignIn(values.email, values.password);
       toast.success("Login Successful!", {
         position: "top-right",
@@ -84,6 +76,7 @@ const Page = () => {
         progress: undefined,
         theme: "light",
       });
+      router.push("/");
     },
   });
 
@@ -95,6 +88,7 @@ const Page = () => {
     },
     validate,
     onSubmit: async (values) => {
+      await emailSignUp(values.email, values.password);
       toast.success(`Welcome, ${values.name}`, {
         position: "top-right",
         autoClose: 5000,
@@ -105,26 +99,34 @@ const Page = () => {
         progress: undefined,
         theme: "light",
       });
-      await emailSignUp(values.email, values.password);
-      toast.success("Sign Up Successful!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      router.push("/");
     },
   });
-
-  const getFieldError = (field: keyof FormValues) =>
-    signUpFormik.touched[field] && signUpFormik.errors[field];
 
   const handleSignUp = () => {
     signUpFormik.handleSubmit();
   };
+
+  const handleSignIn = () => {
+    signInFormik.handleSubmit();
+  };
+  const handleGoogleSignIn = async () => {
+    await signInWithGoogle();
+    toast.success("Login Successful!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+    router.push("/");
+  };
+
+  const getFieldError = (field: keyof FormValues) =>
+    signUpFormik.touched[field] && signUpFormik.errors[field];
 
   return (
     <Box>
@@ -202,7 +204,9 @@ const Page = () => {
               <span className="error">{getFieldError("password")}</span>
             )}
 
-            <button onClick={handleSignUp}>Sign Up</button>
+            <button type="submit" onClick={handleSignUp}>
+              Sign Up
+            </button>
             <Box
               sx={{
                 display: "flex",
@@ -272,7 +276,9 @@ const Page = () => {
               <span className="error">{getFieldError("password")}</span>
             )}
 
-            <button onClick={handleSignUp}>Login</button>
+            <button type="submit" onClick={handleSignIn}>
+              Login
+            </button>
             <Box
               sx={{
                 display: "flex",
@@ -289,6 +295,7 @@ const Page = () => {
                 New User?
               </Typography>
               <Button
+                type="submit"
                 variant="text"
                 sx={{
                   fontSize: ".7rem",
@@ -324,10 +331,10 @@ const Page = () => {
         </Typography>
 
         <button
-          type="button"
+          type="submit"
           className="button"
           style={{ width: "100%", padding: ".5rem" }}
-          onClick={signInWithGoogle}
+          onClick={handleGoogleSignIn}
         >
           <FcGoogle style={{ marginRight: "1rem", fontSize: "1.5rem" }} />
           <Typography> Sign in with Google</Typography>
