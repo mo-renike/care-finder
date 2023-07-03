@@ -9,6 +9,7 @@ import { Box } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { AppContext } from "../AppContext";
 import { auth } from "../services/firebase/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 type Props = {};
 
@@ -16,7 +17,7 @@ const Index = (props: Props) => {
   const { setCurrentUser } = useContext(AppContext);
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         const client = auth.currentUser;
         setCurrentUser(client);

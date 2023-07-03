@@ -6,7 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+//import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { getStorage, ref } from "firebase/storage";
 
 const firebaseConfig = {
@@ -29,12 +29,21 @@ provider.setCustomParameters({ prompt: "select_account" });
 export const signInWithGoogle = () => signInWithPopup(getAuth(), provider);
 
 // Email and Password Authentication
-export const emailSignUp = (email: any, password: any) => {
-  return createUserWithEmailAndPassword(auth, email, password);
+export const emailSignUp = async (email: any, password: any) => {
+  try {
+    return await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const emailSignIn = (email: any, password: any) => {
-  return signInWithEmailAndPassword(auth, email, password);
+export const emailSignIn = async (email: any, password: any) => {
+  try {
+    return await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.error("Error sign-in:", error);
+    throw error;
+  }
 };
 
 // Sign out
@@ -43,21 +52,21 @@ export const signOut = () => getAuth().signOut();
 export const storage = getStorage(app);
 
 // firestore
-export const db = getFirestore(app);
-export const addData: any = async (
-  collection: string,
-  id: string,
-  data: any
-) => {
-  let result = null;
-  let error = null;
+//export const db = getFirestore(app);
+// export const addData: any = async (
+//   collection: string,
+//   id: string,
+//   data: any
+// ) => {
+//   let result = null;
+//   let error = null;
 
-  try {
-    result = await setDoc(doc(db, collection, id), data, {
-      merge: true,
-    });
-  } catch (err) {
-    error = err;
-  }
-  return { result, error };
-};
+//   try {
+//     result = await setDoc(doc(db, collection, id), data, {
+//       merge: true,
+//     });
+//   } catch (err) {
+//     error = err;
+//   }
+//   return { result, error };
+// };

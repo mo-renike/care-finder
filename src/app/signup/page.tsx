@@ -51,7 +51,7 @@ const validate = (values: FormValues) => {
 
 const Page = () => {
   const { currentUser } = useContext(AppContext);
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const toggleForm = () => {
     setToggle(!toggle);
   };
@@ -65,18 +65,32 @@ const Page = () => {
     },
     validate,
     onSubmit: async (values) => {
-      await emailSignIn(values.email, values.password);
-      toast.success("Login Successful!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      router.push("/");
+      try {
+        await emailSignIn(values.email, values.password);
+        toast.success("Login Successful!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        router.push("/");
+      } catch (error) {
+        console.log(error, "error signing up");
+        toast.error(error.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
     },
   });
 
@@ -276,7 +290,7 @@ const Page = () => {
               <span className="error">{getFieldError("password")}</span>
             )}
 
-            <button type="submit" onClick={handleSignIn}>
+            <button type="button" onClick={handleSignIn}>
               Login
             </button>
             <Box
