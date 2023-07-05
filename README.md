@@ -8,6 +8,7 @@ This is a web application that allows users to find and export a list of hospita
 - View a list of hospitals based on the search criteria
 - Export the list of hospitals as a CSV file
 - Pagination for navigating through the list of hospitals
+- Chat with a ai bot to get answers to health related issues
 
 ## Technologies Used
 
@@ -15,6 +16,7 @@ This is a web application that allows users to find and export a list of hospita
 - Material-UI: A popular React UI framework for designing responsive web applications.
 - Firebase: A cloud-based platform for building and managing web and mobile applications.
 - React Toastify: A library for displaying toast notifications in React applications.
+- Openai API : to integrate GPT into the app
 
 ## Installation
 
@@ -33,6 +35,7 @@ This is a web application that allows users to find and export a list of hospita
 4. Use the pagination buttons to navigate through the list of hospitals.
 5. Click the "Export Hospital List" button to export the current list of hospitals as a CSV file.
 6. Toast notifications will appear to provide feedback on the export process.
+7. Chat with ai bot to get answers to your halth related questions
 
 ## Contributing
 
