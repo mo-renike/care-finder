@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Metadata } from "next";
+//import { Metadata } from "next";
 import {
   Box,
   Grid,
@@ -25,9 +25,9 @@ import { AppContext } from "../AppContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const metadata: Metadata = {
-  title: "Sign Up | CareFinder",
-};
+// export const metadata: Metadata = {
+//   title: "Sign Up | CareFinder",
+// };
 interface FormValues {
   email: string;
   password: string;
