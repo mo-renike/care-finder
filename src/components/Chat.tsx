@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Box, Typography, Button } from "@mui/material";
 import { AppContext } from "@/app/AppContext";
+import { ToastContainer, toast } from "react-toastify";
 
 const Chat = () => {
   const [userInput, setUserInput] = useState("");
@@ -30,7 +31,18 @@ const Chat = () => {
 
       setUserInput("");
     } catch (error) {
-      console.error(error, "error");
+      console.log(error);
+
+      toast.error("An error occured, please try later", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -99,6 +111,19 @@ const Chat = () => {
           </button>
         </form>
       </Box>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <ToastContainer />
     </Box>
   );
 };
