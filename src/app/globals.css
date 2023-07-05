@@ -20,7 +20,9 @@ body {
   padding: 0;
   transition: background-color 0.2s ease-in-out;
 }
-
+::-webkit-scrollbar {
+  display: none;
+}
 a {
   color: rgb(var(--accent-color-rgb));
   text-decoration: none;

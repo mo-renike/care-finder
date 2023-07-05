@@ -18,17 +18,12 @@ const Chat = () => {
     if (userInput.trim() === "") return;
 
     try {
-      const response = await axios.post(
-        "https://carefinder.onrender.com/chat",
-        {
-          message: userInput,
-        }
-      );
+      const response = await axios.post("http://localhost:8080/chat", {
+        message: userInput,
+      });
       const aiResponse = response.data.response;
 
       setChatHistory([...chatHistory, userInput, aiResponse]);
-      console.log(aiResponse);
-
       setUserInput("");
     } catch (error) {
       console.log(error);
@@ -71,16 +66,48 @@ const Chat = () => {
             }}
           >
             {chatHistory.map((message, index) => (
-              <Typography
+              <Box
                 sx={{
-                  background: "rgba(250, 250, 250)",
-                  padding: "5px",
-                  borderRadius: "5px",
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "4px",
+                  "&.user": {
+                    justifyContent: "flex-end",
+                  },
+                  "&.ai": {
+                    justifyContent: "flex-start",
+                  },
                 }}
                 key={index}
+                className={index % 2 === 0 ? "user" : "ai"}
               >
-                {message}
-              </Typography>
+                {index % 2 === 0 ? (
+                  <Typography
+                    sx={{
+                      background: "rgba(235, 235, 235)",
+                      padding: "7px",
+                      borderRadius: "5px",
+                      fontSize: "0.9rem",
+                      boxShadow: "0 1px 1px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    {message}
+                  </Typography>
+                ) : (
+                  <Typography
+                    sx={{
+                      background: "rgb(120, 170, 145)",
+                      padding: "7px",
+                      borderRadius: "5px",
+                      fontSize: "0.9rem",
+                      color: "#ffffff",
+                      boxShadow: "0 1px 1px rgba(0, 0, 0, 0.1)",
+                    }}
+                  >
+                    {message}
+                  </Typography>
+                )}
+              </Box>
             ))}
           </Box>
         ) : (
@@ -98,7 +125,7 @@ const Chat = () => {
         >
           <input
             width="100%"
-            placeholder="Message docGPT..."
+            placeholder="Message docGPT"
             type="text"
             value={userInput}
             onChange={handleUserInput}
