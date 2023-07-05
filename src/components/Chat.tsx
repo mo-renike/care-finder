@@ -17,9 +17,12 @@ const Chat = () => {
     if (userInput.trim() === "") return;
 
     try {
-      const response = await axios.post("http://localhost:8080/chat", {
-        message: userInput,
-      });
+      const response = await axios.post(
+        "https://carefinder.onrender.com/chat",
+        {
+          message: userInput,
+        }
+      );
       const aiResponse = response.data.response;
 
       setChatHistory([...chatHistory, userInput, aiResponse]);

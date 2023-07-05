@@ -5,12 +5,12 @@ import { useFormik } from "formik";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 import MarkdownIt from "markdown-it";
-import { Metadata } from "next";
+//import { Metadata } from "next";
 import { AppContext } from "@/app/AppContext";
 
-export const metadata: Metadata = {
-  title: "Add Hospitals | CareFinder",
-};
+// export const metadata: Metadata = {
+//   title: "Add Hospitals | CareFinder",
+// };
 interface FormValues {
   name: string;
   address: string;

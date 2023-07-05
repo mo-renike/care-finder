@@ -1,5 +1,5 @@
 "use client";
-import { Metadata } from "next";
+//import { Metadata } from "next";
 import About from "@/components/About";
 import ExportedList from "@/components/ExportedList";
 import Hero from "@/components/Hero";
@@ -12,9 +12,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import Chat from "@/components/Chat";
 
 type Props = {};
-export const metadata: Metadata = {
-  title: "Home | CareFinder",
-};
+// export const metadata: Metadata = {
+//   title: "Home | CareFinder",
+// };
 const Index = (props: Props) => {
   const { setCurrentUser, isChatOpen, toggleChat } = useContext(AppContext);
 
