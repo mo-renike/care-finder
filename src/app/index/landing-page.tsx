@@ -1,6 +1,5 @@
 "use client";
-import Head from "next/head";
-
+import { Metadata } from "next";
 import About from "@/components/About";
 import ExportedList from "@/components/ExportedList";
 import Hero from "@/components/Hero";
@@ -10,11 +9,14 @@ import React, { useContext, useEffect } from "react";
 import { AppContext } from "../AppContext";
 import { auth } from "../services/firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import Chat from "@/components/Chat";
 
 type Props = {};
-
+export const metadata: Metadata = {
+  title: "Home | CareFinder",
+};
 const Index = (props: Props) => {
-  const { setCurrentUser } = useContext(AppContext);
+  const { setCurrentUser, isChatOpen, toggleChat } = useContext(AppContext);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -26,18 +28,29 @@ const Index = (props: Props) => {
   }, [setCurrentUser]);
 
   return (
-    <Box>
-      <Head>
-        <title> Home | CareFinder</title>
-        <meta
-          name="description"
-          content="CareFinder is a platform that helps you find the best hospitals in Nigeria"
-        />
-      </Head>
+    <Box sx={{ position: "relative" }}>
       <Hero />
+      <Chat />
       <About />
       <HospitalsList />
       <ExportedList />
+      <Box
+        sx={{
+          position: "fixed",
+          right: "5px",
+          bottom: "5px",
+          zIndex: 999,
+        }}
+      >
+        <button
+          style={{
+            boxShadow: "-1px 0px 4px 0px rgba(0,0,0,0.75)",
+          }}
+          onClick={toggleChat}
+        >
+          {isChatOpen ? "Close DocGPT" : "Open DocGPT"}
+        </button>
+      </Box>
     </Box>
   );
 };

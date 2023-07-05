@@ -46,7 +46,8 @@ const Hero = (props: Props) => {
         <Typography variant="h1">Find Hospitals closest to you</Typography>
         <Typography>
           Get information about hospitals in your location and share your
-          experience with others.
+          experience with others. <br /> You can also chat with our AI bot to
+          get answers to your health related questions.
         </Typography>
         <Link
           href="/#find-hospitals"

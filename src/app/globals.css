@@ -39,6 +39,7 @@ a:hover {
 button {
   background-color: rgb(var(--accent-color-rgb));
   border: none;
+  outline: none;
   border-radius: 0.25rem;
   color: rgb(var(--background-end-rgb));
   cursor: pointer;
@@ -49,6 +50,13 @@ button {
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease-in-out;
+}
+input {
+  border: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
 }
 
 .button {

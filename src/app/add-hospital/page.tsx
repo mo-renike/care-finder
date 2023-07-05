@@ -1,13 +1,16 @@
 "use client";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, TextField } from "@mui/material";
 import React, { useState, useContext } from "react";
 import { useFormik } from "formik";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 import MarkdownIt from "markdown-it";
-import Head from "next/head";
+import { Metadata } from "next";
 import { AppContext } from "@/app/AppContext";
 
+export const metadata: Metadata = {
+  title: "Add Hospitals | CareFinder",
+};
 interface FormValues {
   name: string;
   address: string;
@@ -58,13 +61,6 @@ const Page: React.FC = () => {
 
   return (
     <Box>
-      <Head>
-        <title>Add Hospitals | CareFinder</title>
-        <meta
-          name="description"
-          content="Add hospitals to the list of hospitals on the platform"
-        />
-      </Head>
       {currentUser ? (
         <Box
           sx={{
@@ -77,6 +73,24 @@ const Page: React.FC = () => {
             Add hospitals to the list of hospitals on the platform
           </Typography>
           <form onSubmit={Formik.handleSubmit}>
+            <TextField
+              id="name"
+              name="name"
+              label="Hospital Name"
+              value={values.name}
+              onChange={handleChange}
+              error={!!errors.name}
+              helperText={errors.name}
+            />
+            <TextField
+              id="address"
+              name="address"
+              label="Hospital Address"
+              value={values.address}
+              onChange={handleChange}
+              error={!!errors.address}
+              helperText={errors.address}
+            />
             <MdEditor
               style={{ height: "500px" }}
               value={markdownContent}

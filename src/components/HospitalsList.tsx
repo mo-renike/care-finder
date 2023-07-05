@@ -22,7 +22,6 @@ const HospitalsList = () => {
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredHospitals, setFilteredHospitals] = useState<Hospital[]>([]);
-
   const itemsPerPage = 6;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -203,7 +202,11 @@ const HospitalsList = () => {
                 setLocation(e.target.value)
               }
             />
-            <button onClick={() => exportHospitals()} className="button">
+            <button
+              type="button"
+              onClick={() => exportHospitals()}
+              className="button"
+            >
               Export Hospital List
             </button>
           </Box>

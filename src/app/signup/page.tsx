@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import Head from "next/head";
+import { Metadata } from "next";
 import {
   Box,
   Grid,
@@ -25,6 +25,9 @@ import { AppContext } from "../AppContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+export const metadata: Metadata = {
+  title: "Sign Up | CareFinder",
+};
 interface FormValues {
   email: string;
   password: string;
@@ -78,7 +81,7 @@ const Page = () => {
           theme: "light",
         });
         router.push("/");
-      } catch (error) {
+      } catch (error: any) {
         console.log(error, "error signing up");
         toast.error(error.message, {
           position: "top-right",
@@ -144,13 +147,6 @@ const Page = () => {
 
   return (
     <Box>
-      <Head>
-        <title>Sign in | CareFinder</title>
-        <meta
-          name="description"
-          content="Login or Sign up to CareFinder to find the best care for your loved ones"
-        />
-      </Head>
       <Box
         sx={{
           p: 4,

@@ -29,12 +29,19 @@ interface AppContextType {
   setHospitals: React.Dispatch<React.SetStateAction<Hospital[]>>;
   exportedHospitals: string[];
   setExportedHospitals: React.Dispatch<React.SetStateAction<string[]>>;
+  isChatOpen: boolean;
+  setIsChatOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleChat: () => void;
 }
 
 export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
   const [exportedHospitals, setExportedHospitals] = useState<string[]>([]);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const toggleChat = () => {
+    setIsChatOpen((prevIsChatOpen) => !prevIsChatOpen);
+  };
 
   return (
     <AppContext.Provider
@@ -45,6 +52,9 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         setHospitals,
         exportedHospitals,
         setExportedHospitals,
+        isChatOpen,
+        setIsChatOpen,
+        toggleChat,
       }}
     >
       {children}

@@ -1,6 +1,7 @@
 import { Box, Typography, Grid } from "@mui/material";
 import React from "react";
 import {
+  AiOutlineMessage,
   AiOutlineExport,
   AiOutlineSearch,
   AiOutlineShareAlt,
@@ -32,6 +33,10 @@ const About = (props: Props) => {
         <Grid item xs={12} sm={6} md={2} lg={2}>
           <AiOutlineExport fontSize={40} />
           <Typography variant="h6">Export hospitals list </Typography>
+        </Grid>
+        <Grid item xs={12} sm={6} md={2} lg={2}>
+          <AiOutlineMessage fontSize={40} />
+          <Typography variant="h6">Chat with an AI bot</Typography>
         </Grid>
       </Grid>
     </Box>

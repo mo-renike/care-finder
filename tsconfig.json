@@ -31,7 +31,8 @@
     ".next/types/**/*.ts",
     "src/app/page.jsx",
     "src/error.js",
-    "src/components/Loader.jsx"
+    "src/components/Loader.jsx",
+    "server/index.js"
   ],
   "exclude": ["node_modules"]
 }
