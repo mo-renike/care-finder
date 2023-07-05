@@ -4,7 +4,6 @@ import "./globals.css";
 import { AppProvider } from "./AppContext";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/error";
-import type { Metadata } from "next";
 
 export default function RootLayout({
   children,
