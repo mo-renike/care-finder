@@ -4,6 +4,7 @@ import "./globals.css";
 import { AppProvider } from "./AppContext";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorFallback } from "@/error";
+import { ToastContainer } from "react-toastify";
 
 export default function RootLayout({
   children,
@@ -17,6 +18,19 @@ export default function RootLayout({
           <body>
             <Navbar />
             {children}
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+            <ToastContainer />
           </body>
         </AppProvider>
       </ErrorBoundary>
