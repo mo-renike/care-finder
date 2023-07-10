@@ -3,11 +3,12 @@ import axios from "axios";
 import { Box, Typography, Button } from "@mui/material";
 import { AppContext } from "@/app/AppContext";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "@/components/Loader";
 
 const Chat = () => {
   const [userInput, setUserInput] = useState("");
   const [chatHistory, setChatHistory] = useState<string[]>([]);
-
+  const [loading, setLoading] = useState(false);
   const { isChatOpen, setIsChatOpen, currentUser } = useContext(AppContext);
   const handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(event.target.value);
@@ -18,6 +19,7 @@ const Chat = () => {
     if (userInput.trim() === "") return;
 
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://carefinder.onrender.com/chat",
         {
@@ -28,6 +30,7 @@ const Chat = () => {
 
       setChatHistory([...chatHistory, userInput, aiResponse]);
       setUserInput("");
+      setLoading(false);
     } catch (error) {
       console.log(error);
 
@@ -136,8 +139,9 @@ const Chat = () => {
           <button
             style={{ background: "rgba(240, 240, 240)", color: "#242647" }}
             type="submit"
+            disabled={loading} // Disable the button when waiting for a response
           >
-            &rarr;
+            {loading ? <Loader /> : "\u2192"}
           </button>
         </form>
       </Box>
