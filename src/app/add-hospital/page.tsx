@@ -7,6 +7,7 @@ import "react-markdown-editor-lite/lib/index.css";
 import MarkdownIt from "markdown-it";
 //import { Metadata } from "next";
 import { AppContext } from "@/app/AppContext";
+import { toast } from "react-toastify";
 
 // export const metadata: Metadata = {
 //   title: "Add Hospitals | CareFinder",
@@ -25,20 +26,55 @@ const validate = (values: FormValues) => {
   if (!values.address) {
     errors.address = "Please enter hospital address";
   }
-  if (!values.phone) {
-    errors.phone = "Please enter hospital phone number";
-  }
   return errors;
 };
 
 const mdParser = new MarkdownIt();
 
 const Page: React.FC = () => {
-  const { currentUser } = useContext(AppContext);
+  const { currentUser, setHospitals } = useContext(AppContext);
 
   const [markdownContent, setMarkdownContent] = useState("");
   const handleEditorChange = ({ text }: { text: string }) => {
     setMarkdownContent(text);
+  };
+  const handleSubmit = () => {
+    const { name, address } = values;
+    console.log(values);
+
+    const newHospital: Hospital = {
+      name,
+      address,
+      location: "",
+      id: name,
+      formatted_phone_number: undefined,
+      formatted_address: undefined,
+      business_status: "",
+      wheelchair_accessible_entrance: false,
+      opening_hours: {
+        open_now: false,
+      },
+      place_id: "",
+      price_level: 0,
+      reference: "",
+      user_ratings_total: 0,
+      vicinity: "",
+      wheelchair_accessible: false,
+    };
+    setHospitals((prev) => [...prev, newHospital]);
+
+    toast.success("Hospital added successfully!", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    Formik.resetForm();
   };
 
   const Formik = useFormik({
@@ -48,16 +84,10 @@ const Page: React.FC = () => {
       phone: "",
     },
     validate,
-    onSubmit: (values) => {
-      const hospitalData = {
-        ...values,
-        content: markdownContent,
-      };
-      console.log(hospitalData);
-    },
+    onSubmit: handleSubmit,
   });
 
-  const { handleChange, handleSubmit, values, errors } = Formik;
+  const { handleChange, values, errors } = Formik;
 
   return (
     <Box>
@@ -72,7 +102,10 @@ const Page: React.FC = () => {
           <Typography variant="body1">
             Add hospitals to the list of hospitals on the platform
           </Typography>
-          <form onSubmit={Formik.handleSubmit}>
+          <form
+            onSubmit={Formik.handleSubmit}
+            style={{ display: "flex", flexDirection: "column" }}
+          >
             <TextField
               id="name"
               name="name"
@@ -81,6 +114,7 @@ const Page: React.FC = () => {
               onChange={handleChange}
               error={!!errors.name}
               helperText={errors.name}
+              sx={{ my: 1 }}
             />
             <TextField
               id="address"
@@ -90,13 +124,14 @@ const Page: React.FC = () => {
               onChange={handleChange}
               error={!!errors.address}
               helperText={errors.address}
+              sx={{ my: 1 }}
             />
-            <MdEditor
+            {/* <MdEditor
               style={{ height: "500px" }}
               value={markdownContent}
               renderHTML={(text) => mdParser.render(text)}
               onChange={handleEditorChange}
-            />
+            /> */}
             <button style={{ margin: "1rem 0" }} type="submit">
               Submit
             </button>

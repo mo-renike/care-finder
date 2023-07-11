@@ -19,7 +19,7 @@ import Pagination from "@mui/material/Pagination";
 const HospitalsList = () => {
   const { currentUser } = useContext(AppContext);
   const [location, setLocation] = useState("Lagos");
-  const [hospitals, setHospitals] = useState<Hospital[]>([]);
+  const { hospitals, setHospitals } = useContext(AppContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredHospitals, setFilteredHospitals] = useState<Hospital[]>([]);
   const itemsPerPage = 6;
