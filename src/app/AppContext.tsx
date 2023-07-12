@@ -6,17 +6,6 @@ interface User {
   password: string;
 }
 
-interface Hospital {
-  name: string;
-  address: string;
-  phone: string;
-  website: string;
-  rating: number;
-  reviews: string[];
-  beds: number;
-  photoUrl: string;
-}
-
 export const AppContext = createContext<AppContextType>({} as AppContextType);
 
 interface AppProviderProps {

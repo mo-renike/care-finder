@@ -73,7 +73,7 @@ const HospitalsList = () => {
       }
     };
     getHospitals();
-  }, [location]);
+  }, [location, setHospitals]);
 
   const exportHospitals = async () => {
     if (!currentUser) {
