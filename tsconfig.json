@@ -22,7 +22,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["hoist-non-react-statics"]
+    "types": ["jest"]
   },
   "include": [
     "next-env.d.ts",
@@ -32,7 +32,9 @@
     "src/app/page.jsx",
     "src/error.js",
     "src/components/Loader.jsx",
-    "server/index.js"
+    "server/index.js",
+    "**/*.test.ts",
+    "**/*.test.tsx"
   ],
   "exclude": ["node_modules"]
 }

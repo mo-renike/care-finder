@@ -40,7 +40,6 @@ const Page: React.FC = () => {
   };
   const handleSubmit = () => {
     const { name, address } = values;
-    console.log(values);
 
     const newHospital: Hospital = {
       name,
@@ -95,6 +94,10 @@ const Page: React.FC = () => {
         <Box
           sx={{
             p: 4,
+            margin: "auto",
+            maxWidth: "600px",
+            boxShadow: "0 0 3px rgba(0, 0, 0, 0.2)",
+            borderRadius: "10px",
             mt: "7rem",
           }}
         >
