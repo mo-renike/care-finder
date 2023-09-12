@@ -1,5 +1,4 @@
-"use strict";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -7,35 +6,22 @@ import Link from "next/link";
 import {
   Box,
   Button,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  IconButton,
-  Drawer,
+  Hidden, // Import Hidden component
 } from "@mui/material";
 import {
   AiFillHome,
   AiOutlineSearch,
   AiOutlineLogin,
   AiOutlinePlus,
-  AiOutlineArrowDown,
 } from "react-icons/ai";
 import { MdOutlineLocalHospital } from "react-icons/md";
 import { AppContext } from "@/app/AppContext";
 import { signOut } from "@/app/services/firebase/firebase";
-import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = () => {
   const { currentUser } = useContext(AppContext);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   const handleSignout = () => {
     signOut();
@@ -52,56 +38,6 @@ const Navbar = () => {
     window.location.reload();
   };
 
-  const renderMobileMenu = (
-    <Drawer anchor="right" open={mobileOpen} onClose={handleDrawerToggle}>
-      <List>
-        <ListItemButton onClick={handleDrawerToggle}>
-          <ListItemIcon>
-            <MdOutlineLocalHospital />
-          </ListItemIcon>
-          <ListItemText primary="CareFinder" />
-        </ListItemButton>
-        <ListItemButton component="a" href="/">
-          <ListItemIcon>
-            <AiFillHome />
-          </ListItemIcon>
-          <ListItemText primary="Home" />
-        </ListItemButton>
-        <ListItemButton component="a" href="/#find-hospitals">
-          <ListItemIcon>
-            <AiOutlineSearch />
-          </ListItemIcon>
-          <ListItemText primary="Find Hospitals" />
-        </ListItemButton>
-        {currentUser ? (
-          <ListItemButton component="a" href="/add-hospital">
-            <ListItemIcon>
-              <AiOutlinePlus />
-            </ListItemIcon>
-            <ListItemText primary="Add Hospitals" />
-          </ListItemButton>
-        ) : (
-          ""
-        )}
-        {currentUser ? (
-          <ListItemButton onClick={handleSignout}>
-            <ListItemIcon>
-              <AiOutlineLogin />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItemButton>
-        ) : (
-          <ListItemButton component="a" href="/signup">
-            <ListItemIcon>
-              <AiOutlineLogin />
-            </ListItemIcon>
-            <ListItemText primary="Login" />
-          </ListItemButton>
-        )}
-      </List>
-    </Drawer>
-  );
-
   return (
     <AppBar
       sx={{
@@ -111,51 +47,54 @@ const Navbar = () => {
       }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
-        <IconButton
-          color="inherit"
-          aria-label="Open mobile menu"
-          onClick={handleDrawerToggle}
-          sx={{ display: { sm: "none", md: "block" } }}
-        >
-          <AiOutlineMenu />
-        </IconButton>
         <Link href="/">
+          {" "}
           <MdOutlineLocalHospital />
           <Typography variant="h6" component="div">
             CareFinder
           </Typography>
         </Link>
-        <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <Link href="/">
-            <AiFillHome />
-            <Typography>Home</Typography>
-          </Link>
-          <Link href="/#find-hospitals">
-            <AiOutlineSearch />
-            <Typography>Find Hospitals</Typography>
-          </Link>
-          {currentUser ? (
-            <Link href="/add-hospital">
-              <AiOutlinePlus />
-              <Typography>Add Hospitals</Typography>
+
+        {/* Hidden on smaller screens */}
+        <Hidden smDown>
+          <Box sx={{ display: "flex" }}>
+            <Link href="/">
+              <AiFillHome />
+              <Typography>Home</Typography>
             </Link>
-          ) : (
-            ""
-          )}
-          {currentUser ? (
-            <Button onClick={handleSignout}>
-              <AiOutlineLogin />
-              <Typography>Logout</Typography>
-            </Button>
-          ) : (
-            <Link href="/signup">
-              <AiOutlineLogin />
-              <Typography>Login</Typography>
+            <Link href="/#find-hospitals">
+              <AiOutlineSearch />
+              <Typography>Find Hospitals</Typography>
             </Link>
-          )}
-        </Box>
+            {currentUser ? (
+              <Link href="/add-hospital">
+                <AiOutlinePlus />
+                <Typography>Add Hospitals</Typography>
+              </Link>
+            ) : (
+              ""
+            )}
+            {currentUser ? (
+              <Button onClick={handleSignout}>
+                <AiOutlineLogin />
+                <Typography>Logout</Typography>
+              </Button>
+            ) : (
+              <Link href="/signup">
+                <AiOutlineLogin />
+                <Typography>Login</Typography>
+              </Link>
+            )}
+          </Box>
+        </Hidden>
+
+        {/* Shown on smaller screens */}
+        <Hidden mdUp>
+          <Typography variant="h6" component="div">
+            Menu
+          </Typography>
+        </Hidden>
       </Toolbar>
-      {renderMobileMenu}
       <ToastContainer
         position="top-right"
         autoClose={5000}
