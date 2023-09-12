@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -6,22 +6,31 @@ import Link from "next/link";
 import {
   Box,
   Button,
-  Hidden, // Import Hidden component
+  Hidden,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
 import {
   AiFillHome,
   AiOutlineSearch,
   AiOutlineLogin,
   AiOutlinePlus,
+  AiOutlineArrowDown,
+  AiOutlineMenu,
 } from "react-icons/ai";
 import { MdOutlineLocalHospital } from "react-icons/md";
 import { AppContext } from "@/app/AppContext";
 import { signOut } from "@/app/services/firebase/firebase";
+import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = () => {
   const { currentUser } = useContext(AppContext);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSignout = () => {
     signOut();
@@ -36,6 +45,10 @@ const Navbar = () => {
       theme: "light",
     });
     window.location.reload();
+  };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
@@ -55,7 +68,48 @@ const Navbar = () => {
           </Typography>
         </Link>
 
-        {/* Hidden on smaller screens */}
+        <Hidden mdUp>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Button onClick={toggleMobileMenu}>
+              <AiOutlineMenu />
+            </Button>
+            <Typography variant="h6" component="div">
+              CareFinder
+            </Typography>
+          </Box>
+          {mobileMenuOpen && (
+            <Box sx={{ marginTop: "20px" }}>
+              <Link href="/">
+                <AiFillHome />
+                <Typography>Home</Typography>
+              </Link>
+              <Link href="/#find-hospitals">
+                <AiOutlineSearch />
+                <Typography>Find Hospitals</Typography>
+              </Link>
+              {currentUser ? (
+                <Link href="/add-hospital">
+                  <AiOutlinePlus />
+                  <Typography>Add Hospitals</Typography>
+                </Link>
+              ) : (
+                ""
+              )}
+              {currentUser ? (
+                <Button onClick={handleSignout}>
+                  <AiOutlineLogin />
+                  <Typography>Logout</Typography>
+                </Button>
+              ) : (
+                <Link href="/signup">
+                  <AiOutlineLogin />
+                  <Typography>Login</Typography>
+                </Link>
+              )}
+            </Box>
+          )}
+        </Hidden>
+
         <Hidden smDown>
           <Box sx={{ display: "flex" }}>
             <Link href="/">
@@ -86,13 +140,6 @@ const Navbar = () => {
               </Link>
             )}
           </Box>
-        </Hidden>
-
-        {/* Shown on smaller screens */}
-        <Hidden mdUp>
-          <Typography variant="h6" component="div">
-            Menu
-          </Typography>
         </Hidden>
       </Toolbar>
       <ToastContainer
