@@ -1,5 +1,5 @@
-"use cient";
-import React, { useContext } from "react";
+"use strict";
+import React, { useContext, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -12,6 +12,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  IconButton,
+  Drawer,
 } from "@mui/material";
 import {
   AiFillHome,
@@ -26,8 +28,14 @@ import { signOut } from "@/app/services/firebase/firebase";
 import Image from "next/image";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const Navbar = () => {
   const { currentUser } = useContext(AppContext);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   const handleSignout = () => {
     signOut();
@@ -43,6 +51,57 @@ const Navbar = () => {
     });
     window.location.reload();
   };
+
+  const renderMobileMenu = (
+    <Drawer anchor="right" open={mobileOpen} onClose={handleDrawerToggle}>
+      <List>
+        <ListItemButton onClick={handleDrawerToggle}>
+          <ListItemIcon>
+            <MdOutlineLocalHospital />
+          </ListItemIcon>
+          <ListItemText primary="CareFinder" />
+        </ListItemButton>
+        <ListItemButton component="a" href="/">
+          <ListItemIcon>
+            <AiFillHome />
+          </ListItemIcon>
+          <ListItemText primary="Home" />
+        </ListItemButton>
+        <ListItemButton component="a" href="/#find-hospitals">
+          <ListItemIcon>
+            <AiOutlineSearch />
+          </ListItemIcon>
+          <ListItemText primary="Find Hospitals" />
+        </ListItemButton>
+        {currentUser ? (
+          <ListItemButton component="a" href="/add-hospital">
+            <ListItemIcon>
+              <AiOutlinePlus />
+            </ListItemIcon>
+            <ListItemText primary="Add Hospitals" />
+          </ListItemButton>
+        ) : (
+          ""
+        )}
+        {currentUser ? (
+          <ListItemButton onClick={handleSignout}>
+            <ListItemIcon>
+              <AiOutlineLogin />
+            </ListItemIcon>
+            <ListItemText primary="Logout" />
+          </ListItemButton>
+        ) : (
+          <ListItemButton component="a" href="/signup">
+            <ListItemIcon>
+              <AiOutlineLogin />
+            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItemButton>
+        )}
+      </List>
+    </Drawer>
+  );
+
   return (
     <AppBar
       sx={{
@@ -52,15 +111,21 @@ const Navbar = () => {
       }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
+        <IconButton
+          color="inherit"
+          aria-label="Open mobile menu"
+          onClick={handleDrawerToggle}
+          sx={{ display: { sm: "none", md: "block" } }}
+        >
+          <AiOutlineMenu />
+        </IconButton>
         <Link href="/">
-          {" "}
           <MdOutlineLocalHospital />
           <Typography variant="h6" component="div">
             CareFinder
           </Typography>
         </Link>
-
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: { xs: "none", md: "flex" } }}>
           <Link href="/">
             <AiFillHome />
             <Typography>Home</Typography>
@@ -90,6 +155,7 @@ const Navbar = () => {
           )}
         </Box>
       </Toolbar>
+      {renderMobileMenu}
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -108,22 +174,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-// <Box>
-//   <Box sx={{ display: "flex" }}>
-//     {" "}
-//     <Image
-//       width={100}
-//       height={100}
-//       src={currentUser?.photoURL}
-//       alt="DP"
-//     />
-//     <Typography>
-//       {currentUser?.displayName} <AiOutlineArrowDown />
-//     </Typography>
-//   </Box>
-
-//   <Button onClick={signOut}>
-//     <AiOutlineLogin />
-//     <Typography>Logout</Typography>
-//   </Button>
-// </Box>
