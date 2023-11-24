@@ -10,6 +10,7 @@ const Chat = () => {
   const [chatHistory, setChatHistory] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const { isChatOpen, setIsChatOpen, currentUser } = useContext(AppContext);
+
   const handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(event.target.value);
   };
@@ -33,7 +34,7 @@ const Chat = () => {
       setLoading(false);
     } catch (error) {
       console.log(error);
-
+      setLoading(false);
       toast.error("An error occured, please try later", {
         position: "top-right",
         autoClose: 5000,
@@ -71,7 +72,7 @@ const Chat = () => {
               scrollbarWidth: "none",
             }}
           >
-            {chatHistory.map((message, index) => (
+            {chatHistory.map((message: string, index: number) => (
               <Box
                 sx={{
                   display: "flex",
@@ -117,9 +118,10 @@ const Chat = () => {
             ))}
           </Box>
         ) : (
-          <Typography sx={{ textAlign: "center" }}>
-            You need to be logged in to chat with DocGPT!
-          </Typography>
+          ""
+          // <Typography sx={{ textAlign: "center" }}>
+          //   You need to be logged in to chat with DocGPT!
+          // </Typography>
         )}
         <form
           style={{
@@ -131,15 +133,26 @@ const Chat = () => {
         >
           <input
             width="100%"
-            placeholder="Message docGPT"
+            placeholder={
+              currentUser ? `Message docGPT` : "Login to Message DocGPT"
+            }
             type="text"
             value={userInput}
             onChange={handleUserInput}
+            disabled={!currentUser}
+            style={{
+              cursor: currentUser ? "auto" : "not-allowed",
+            }}
           />
           <button
-            style={{ background: "rgba(240, 240, 240)", color: "#242647" }}
+            style={{
+              background: "rgba(240, 240, 240)",
+              color: "#242647",
+              border: " 1px solid #78aa91",
+              cursor: currentUser ? "auto" : "not-allowed",
+            }}
             type="submit"
-            disabled={loading} // Disable the button when waiting for a response
+            disabled={loading || !currentUser}
           >
             {loading ? <Loader /> : "\u2192"}
           </button>
