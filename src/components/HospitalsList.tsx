@@ -29,6 +29,7 @@ const HospitalsList = () => {
     indexOfFirstItem,
     indexOfLastItem
   );
+  const [loading, setLoading] = useState(false);
 
   const cities: string[] = [
     "Lekki",
@@ -53,6 +54,8 @@ const HospitalsList = () => {
   useEffect(() => {
     const getHospitals = async () => {
       try {
+        setLoading(true);
+
         const res = await fetch(`https://api.reliancehmo.com/v3/providers?`);
         if (!res.ok) {
           throw new Error("Something went wrong");
@@ -67,6 +70,7 @@ const HospitalsList = () => {
           setHospitals(filteredData);
           setFilteredHospitals(filteredData);
           setCurrentPage(1);
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
@@ -215,7 +219,7 @@ const HospitalsList = () => {
             columnSpacing={isMobile ? 1 : 2}
             rowSpacing={isMobile ? 2 : 0}
           >
-            {!filteredHospitals.length ? (
+            {loading ? (
               <Loader />
             ) : (
               currentHospitals.map((hospital, index) => (

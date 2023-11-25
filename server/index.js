@@ -16,7 +16,8 @@ app.listen(8080, () => {
 });
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  // apiKey: process.env.OPENAI_API_KEY,
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 

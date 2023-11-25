@@ -27,6 +27,8 @@ const Chat = () => {
           message: userInput,
         }
       );
+      console.log(response, "response");
+
       const aiResponse = response.data.response;
 
       setChatHistory([...chatHistory, userInput, aiResponse]);
