@@ -10,13 +10,13 @@ import {
 import { getStorage, ref } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCOod7rkj8bJRx2ZYrhGzmjIqbieYbbSj8",
-  authDomain: "carefinder-9b1d7.firebaseapp.com",
-  projectId: "carefinder-9b1d7",
-  storageBucket: "carefinder-9b1d7.appspot.com",
-  messagingSenderId: "290580420706",
-  appId: "1:290580420706:web:2f7de1729546278f77993b",
-  measurementId: "G-BDFV2EG911",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 const app = initializeApp(firebaseConfig);
 

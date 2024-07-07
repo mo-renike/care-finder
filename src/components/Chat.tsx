@@ -21,16 +21,10 @@ const Chat = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        "https://carefinder.onrender.com/chat",
-        {
-          message: userInput,
-        }
-      );
-      console.log(response, "response");
-
-      const aiResponse = response.data.response;
-
+      const response = await axios.post("http://localhost:8080/chat", {
+        message: userInput,
+      });
+      const aiResponse = response.data.text;
       setChatHistory([...chatHistory, userInput, aiResponse]);
       setUserInput("");
       setLoading(false);

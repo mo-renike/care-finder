@@ -18,7 +18,7 @@ import Pagination from "@mui/material/Pagination";
 
 const HospitalsList = () => {
   const { currentUser } = useContext(AppContext);
-  const [location, setLocation] = useState("Lagos");
+  const [location, setLocation] = useState("Abuja");
   const { hospitals, setHospitals } = useContext(AppContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredHospitals, setFilteredHospitals] = useState<Hospital[]>([]);
@@ -47,6 +47,7 @@ const HospitalsList = () => {
     "Jos",
     "Enugu",
     "Ikeja",
+    "Gombe",
   ];
 
   const isMobile = useMediaQuery("(max-width: 600px)");

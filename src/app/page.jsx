@@ -1,15 +1,13 @@
-
-import Head from "next/head";
+import { Metadata } from "next";
 
 import Index from "./index/landing-page";
 
+export const metadata = {
+  title: "Find hospitals close to you",
+};
 export default function Home() {
   return (
     <main>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Index />
     </main>
   );

@@ -1,45 +1,41 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import { Configuration, OpenAIApi } from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai"
 
 const app = express();
 dotenv.config();
 
+const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY);
+
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+
 app.use(cors());
 app.use(express.json());
-app.get("/", (req, res) => {
-  res.send("Server is running!");
-});
+app.use(express.urlencoded({ extended: true }));
+
 app.listen(8080, () => {
   console.log(`Server is listening on port 8080`);
 });
 
-const configuration = new Configuration({
-  // apiKey: process.env.OPENAI_API_KEY,
-  apiKey: "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",
+app.get("/", (req, res) => {
+  res.send("Server is running!");
 });
-const openai = new OpenAIApi(configuration);
 
-app.post("/chat", (req, res) => {
+
+app.post("/chat", async (req, res) => {
   const { message } = req.body;
 
-  openai
-    .createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "user",
-          content: message,
-        },
-      ],
-    })
-    .then((response) => {
-      const aiResponse = response.data.choices[0].message.content;
-      res.json({ response: aiResponse });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ error: "An error occurred" });
-    });
-});
+  try {
+    const result = await model.generateContent(message);
+    const response = result.response;
+    const text = response.text();
+
+    res.status(200).json({ text });
+
+  } catch (error) {
+    console.log(error, 'Error processing message');
+  }
+
+})
