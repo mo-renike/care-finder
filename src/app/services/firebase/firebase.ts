@@ -7,7 +7,6 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 //import { getFirestore, doc, setDoc } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
 import { getStorage, ref } from "firebase/storage";
 
 const firebaseConfig = {
@@ -20,7 +19,7 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
 // aunthentication
 export const auth = getAuth(app);
 
