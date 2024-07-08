@@ -21,15 +21,18 @@ const Chat = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post("https://carefinder.onrender.com/chat", {
-        message: userInput,
-      });
+      const response = await axios.post(
+        "https://carefinder.onrender.com/chat",
+        {
+          message: userInput,
+        }
+      );
       const aiResponse = response.data.text;
       setChatHistory([...chatHistory, userInput, aiResponse]);
       setUserInput("");
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.log(error, "error");
       setLoading(false);
       toast.error("An error occured, please try later", {
         position: "top-right",
