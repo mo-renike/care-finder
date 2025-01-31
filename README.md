@@ -41,6 +41,4 @@ This is a web application that allows users to find and export a list of hospita
 
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
-## Acknowledgments
 
-- This project was developed as part of a learning exercise for AltSchool and is not affiliated with any real-world healthcare organizations.
